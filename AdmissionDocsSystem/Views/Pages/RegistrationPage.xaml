@@ -1,0 +1,80 @@
+﻿<Page x:Class="AdmissionDocsSystem.Views.Pages.RegistrationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AdmissionDocsSystem.Views.Pages"
+      mc:Ignorable="d" 
+      FontSize="14"
+      d:DesignHeight="600" d:DesignWidth="1080"
+      Title="Регистрация">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#009ee0">
+            <Label Foreground="White" FontWeight="Bold" Content="Регистрация Абитуриента" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+        </Grid>
+        
+        <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Имя:"/>
+            <TextBox Width="250"/> 
+            <Label Content="Фамилия:"/>
+            <TextBox Width="250"/>
+            <Label Content="Отчество:"/>
+            <TextBox Width="250"/>
+            <Label Content="Дата рождения:"/>
+            <DatePicker Width="250"/>
+            <Label Content="Пол:"/>
+            <ComboBox Width="250">
+                <ComboBoxItem>Мужской</ComboBoxItem>
+                <ComboBoxItem>Женский</ComboBoxItem>
+            </ComboBox>
+            <Label Content="Образование:"/>
+            <ComboBox Width="250"/>
+            <Label Content="Направление:"/>
+            <ComboBox Width="250"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Электронная почта:"/>
+            <TextBox Width="250"/>
+            <Label Content="Номер телефона:"/>
+            <TextBox Width="250"/>
+            <Label Content="Адрес регистрации:"/>
+            <TextBox Width="250" Height="40" TextWrapping="Wrap"/>
+            <Label Content="Адрес проживания:"/>
+            <TextBox Width="250" Height="40" TextWrapping="Wrap"/>
+            <CheckBox Width="250" Height="Auto" Margin="0,20,0,0">
+                <TextBlock Text="Я даю согласие на обработку персональных данных" TextWrapping="Wrap"/>
+            </CheckBox>
+            <Button Content="Отправить данные" Margin="0,10,0,5" Height="40" Background="#009ee0" Foreground="White" FontWeight="Bold">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Отмена" x:Name="CancelRegistrationButton" Click="CancelRegistrationButton_Click" Background="#009ee0" Foreground="White" Height="35" FontWeight="Bold">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Height="auto" >
+            <TextBlock Text="Ваши данные будут отправлены на проверку приёмной комисси, пожалуйста, убедитесь, что вы указали актульные данные о себе и без ошибок." 
+                       Margin="10" TextWrapping="Wrap" Height="auto" FontWeight="Bold"/>
+        </StackPanel>
+
+    </Grid>
+</Page>
