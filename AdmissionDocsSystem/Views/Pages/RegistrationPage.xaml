@@ -22,47 +22,47 @@
         <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#009ee0">
             <Label Foreground="White" FontWeight="Bold" Content="Регистрация Абитуриента" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
         </Grid>
-        
+
         <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label Content="Имя:"/>
-            <TextBox Width="250"/> 
+            <TextBox x:Name="FirstNameTextBox" Width="250"/>
             <Label Content="Фамилия:"/>
-            <TextBox Width="250"/>
+            <TextBox x:Name="LastNameTextBox" Width="250"/>
             <Label Content="Отчество:"/>
-            <TextBox Width="250"/>
+            <TextBox x:Name="MiddleNameTextBox" Width="250"/>
             <Label Content="Дата рождения:"/>
-            <DatePicker Width="250"/>
+            <DatePicker x:Name="BirthDatePicker" Width="250"/>
             <Label Content="Пол:"/>
-            <ComboBox Width="250">
+            <ComboBox x:Name="GenderComboBox" Width="250">
                 <ComboBoxItem>Мужской</ComboBoxItem>
                 <ComboBoxItem>Женский</ComboBoxItem>
             </ComboBox>
             <Label Content="Образование:"/>
-            <ComboBox Width="250"/>
+            <ComboBox x:Name="EducationComboBox" Width="250"/>
             <Label Content="Направление:"/>
-            <ComboBox Width="250"/>
+            <ComboBox x:Name="FieldOfStudyComboBox" Width="250"/>
         </StackPanel>
-        
+
         <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label Content="Электронная почта:"/>
-            <TextBox Width="250"/>
+            <TextBox x:Name="EmailTextBox" Width="250"/>
             <Label Content="Номер телефона:"/>
-            <TextBox Width="250"/>
+            <TextBox x:Name="PhoneNumberTextBox" Width="250"/>
             <Label Content="Адрес регистрации:"/>
-            <TextBox Width="250" Height="40" TextWrapping="Wrap"/>
+            <TextBox x:Name="RegistrationAddressTextBox" Width="250" Height="40" TextWrapping="Wrap"/>
             <Label Content="Адрес проживания:"/>
-            <TextBox Width="250" Height="40" TextWrapping="Wrap"/>
-            <CheckBox Width="250" Height="Auto" Margin="0,20,0,0">
+            <TextBox x:Name="ResidentialAddressTextBox" Width="250" Height="40" TextWrapping="Wrap"/>
+            <CheckBox x:Name="DataProcessingConsentCheckBox" Width="250" Height="Auto" Margin="0,20,0,0">
                 <TextBlock Text="Я даю согласие на обработку персональных данных" TextWrapping="Wrap"/>
             </CheckBox>
-            <Button Content="Отправить данные" Margin="0,10,0,5" Height="40" Background="#009ee0" Foreground="White" FontWeight="Bold">
+            <Button x:Name="SubmitDataButton" Content="Отправить данные" Margin="0,10,0,5" Height="40" Background="#009ee0" Foreground="White" FontWeight="Bold" Click="SubmitDataButton_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Отмена" x:Name="CancelRegistrationButton" Click="CancelRegistrationButton_Click" Background="#009ee0" Foreground="White" Height="35" FontWeight="Bold">
+            <Button x:Name="CancelRegistrationButton" Content="Отмена" Click="CancelRegistrationButton_Click" Background="#009ee0" Foreground="White" Height="35" FontWeight="Bold">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>

@@ -45,5 +45,10 @@ namespace AdmissionDocsSystem.Views.Pages
             CloseMainWindow();
 
         }
+
+        private void SubmitDataButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
