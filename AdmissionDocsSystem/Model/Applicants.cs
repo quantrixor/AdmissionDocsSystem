@@ -37,6 +37,7 @@ namespace AdmissionDocsSystem.Model
         public Nullable<int> EducationalLevelID { get; set; }
         public Nullable<int> ProgramTypeID { get; set; }
         public Nullable<bool> IsConfirmed { get; set; }
+        public string PhoneNumber { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApplicantEducation> ApplicantEducation { get; set; }
@@ -48,5 +49,6 @@ namespace AdmissionDocsSystem.Model
         public virtual ICollection<Documents> Documents { get; set; }
         public virtual EducationalLevels EducationalLevels { get; set; }
         public virtual ProgramTypes ProgramTypes { get; set; }
+
     }
 }

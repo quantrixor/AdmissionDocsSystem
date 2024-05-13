@@ -1,16 +1,15 @@
-﻿<Window x:Class="AdmissionDocsSystem.MainWindow"
+﻿<Window x:Class="AdmissionDocsSystem.Views.Windows.ApplicantsMainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdmissionDocsSystem"
+        xmlns:local="clr-namespace:AdmissionDocsSystem.Views.Windows"
         mc:Ignorable="d"
+        Title="{Binding ElementName=MainUserFrame, Path=Content.Title}" Height="600" Width="1080"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
-        Loaded="Window_Loaded"
-        
-        Title="{Binding ElementName=MainFrame, Path=Content.Title}" Height="600" Width="1080">
+        Loaded="Window_Loaded">
     <Grid>
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        <Frame Name="MainUserFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

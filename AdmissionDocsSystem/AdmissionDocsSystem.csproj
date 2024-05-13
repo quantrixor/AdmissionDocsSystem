@@ -70,6 +70,7 @@
     <Compile Include="Model\Applicants.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ApplicantViewModel.cs" />
     <Compile Include="Model\Applications.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
@@ -114,9 +115,13 @@
     </Compile>
     <Compile Include="ViewModel\EmailValidator.cs" />
     <Compile Include="ViewModel\LoadData.cs" />
+    <Compile Include="ViewModel\NotifyClass.cs" />
     <Compile Include="ViewModel\PasswordGenerator.cs" />
     <Compile Include="Views\Pages\AdminPages\ApplicantsListPage.xaml.cs">
       <DependentUpon>ApplicantsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\ProfileApplicantsPage.xaml.cs">
+      <DependentUpon>ProfileApplicantsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pages\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
@@ -126,6 +131,9 @@
     </Compile>
     <Compile Include="Views\Windows\AdminMainWindow.xaml.cs">
       <DependentUpon>AdminMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ApplicantsMainWindow.xaml.cs">
+      <DependentUpon>ApplicantsMainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\SignInWindow.xaml.cs">
       <DependentUpon>SignInWindow.xaml</DependentUpon>
@@ -146,6 +154,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Pages\ProfileApplicantsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\RegistrationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -155,6 +167,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\AdminMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\ApplicantsMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

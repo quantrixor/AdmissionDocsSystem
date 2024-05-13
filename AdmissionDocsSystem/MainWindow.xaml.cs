@@ -1,4 +1,5 @@
-﻿using AdmissionDocsSystem.Views.Pages;
+﻿using AdmissionDocsSystem.Model;
+using AdmissionDocsSystem.Views.Pages;
 using System.Windows;
 
 namespace AdmissionDocsSystem
@@ -8,6 +9,8 @@ namespace AdmissionDocsSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Users _currentUser;
+
         public MainWindow()
         {
             InitializeComponent();

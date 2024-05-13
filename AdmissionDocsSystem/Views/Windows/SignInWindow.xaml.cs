@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AdmissionDocsSystem.Model;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AdmissionDocsSystem.Views.Windows
 {
@@ -33,9 +24,54 @@ namespace AdmissionDocsSystem.Views.Windows
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminMainWindow adminWindow = new AdminMainWindow();
-            adminWindow.Show();
-            this.Close();
+            string email = EmailTextBox.Text;
+            string password = UserPasswordBox.Password;
+
+            if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Пустые значения недопустимы.", "Ошибка авторизации", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                var user = AuthenticateUser(email, password);
+                if (user != null)
+                {
+                    if (user.Roles.RoleName == "Administrator")
+                    {
+                        AdminMainWindow adminWindow = new AdminMainWindow(user);
+                        adminWindow.Show();
+                    }
+                    else if (user.Roles.RoleName == "Applicant")
+                    {
+                        ApplicantsMainWindow applicantsMainWindow = new ApplicantsMainWindow(user);
+                        applicantsMainWindow.Show();
+                    }
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Неверный email или пароль. Попробуйте снова.", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+
+        public Users AuthenticateUser(string email, string password)
+        {
+            using (var db = new AdmissionDocsSystemEntities())
+            {
+                var user = db.Users.Include("Roles")
+                                   .FirstOrDefault(u => u.Email == email && u.Password == password);
+                return user;
+            }
+        }
+
     }
 }

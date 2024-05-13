@@ -1,4 +1,5 @@
-﻿using AdmissionDocsSystem.Views.Pages.AdminPages;
+﻿using AdmissionDocsSystem.Model;
+using AdmissionDocsSystem.Views.Pages.AdminPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,11 @@ namespace AdmissionDocsSystem.Views.Windows
     /// </summary>
     public partial class AdminMainWindow : Window
     {
-        public AdminMainWindow()
+        private Users _currentUser;
+        public AdminMainWindow(Users currentUser)
         {
             InitializeComponent();
+            _currentUser = currentUser;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

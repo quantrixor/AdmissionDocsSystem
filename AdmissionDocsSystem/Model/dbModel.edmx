@@ -24,6 +24,7 @@
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
           <Property Name="ApplicationStatusID" Type="int" />
           <Property Name="ConfirmedByAdmin" Type="bit" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="DateOfBirth" Type="date" />
           <Property Name="Gender" Type="nvarchar" MaxLength="50" />
           <Property Name="RegistrationAddress" Type="nvarchar" MaxLength="255" />
@@ -436,6 +437,7 @@
           <NavigationProperty Name="Documents" Relationship="AdmissionDocsSystemModel.FK__Documents__Appli__4222D4EF" FromRole="Applicants" ToRole="Documents" />
           <NavigationProperty Name="EducationalLevels" Relationship="AdmissionDocsSystemModel.FK_Applicants_EducationalLevels" FromRole="Applicants" ToRole="EducationalLevels" />
           <NavigationProperty Name="ProgramTypes" Relationship="AdmissionDocsSystemModel.FK_Applicants_ProgramTypes" FromRole="Applicants" ToRole="ProgramTypes" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Applications">
           <Key>
@@ -705,6 +707,7 @@
           <EntitySetMapping Name="Applicants">
             <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Applicants">
               <MappingFragment StoreEntitySet="Applicants">
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
                 <ScalarProperty Name="ProgramTypeID" ColumnName="ProgramTypeID" />
                 <ScalarProperty Name="EducationalLevelID" ColumnName="EducationalLevelID" />

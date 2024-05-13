@@ -16,18 +16,18 @@
             <Label Foreground="#009ee0" Content="Вход в систему" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="20" Margin="0,0,0,20"/>
 
 
-            <Label Content="Имя пользователя:" Foreground="#009ee0"/>
-            <TextBox Width="270" Height="30" VerticalContentAlignment="Center"/>
+            <Label Content="Электронная почта:" Foreground="#009ee0"/>
+            <TextBox x:Name="EmailTextBox" Width="270" Height="30" VerticalContentAlignment="Center"/>
             <Label Content="Пароль:" Foreground="#009ee0"/>
-            <PasswordBox Width="270" Height="30" VerticalContentAlignment="Center"/>
-            <Button Content="Войти" x:Name="SignInButton" Height="30" Margin="0,10,0,5" Background="#009ee0" Foreground="White" Click="SignInButton_Click">
+            <PasswordBox x:Name="UserPasswordBox" Width="270" Height="30" VerticalContentAlignment="Center"/>
+            <Button Content="Войти" x:Name="SignInButton" Margin="0,10,0,5" Click="SignInButton_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Регистрация" x:Name="RegistrationButton" Click="RegistrationButton_Click" Height="30" Background="#009ee0" Foreground="White">
+            <Button Content="Регистрация" x:Name="RegistrationButton" Click="RegistrationButton_Click" Height="30">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
