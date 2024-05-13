@@ -20,6 +20,7 @@ namespace AdmissionDocsSystem.Model
         public string ProgramType { get; set; }
         public string EducationForm { get; set; }
         public string ApplicationStatus { get; set; }
+        public string ProgramTypeCode { get; set; }
     }
 
 }

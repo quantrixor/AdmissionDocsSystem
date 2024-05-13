@@ -41,6 +41,7 @@ namespace AdmissionDocsSystem.Views.Pages
                         ResidentialAddress = a.ResidentialAddress,
                         EducationalLevel = a.EducationalLevels.Description,
                         ProgramType = a.ProgramTypes.Description,
+                        ProgramTypeCode = a.ProgramTypes.Specialties.SpecialtyCode,
                         EducationForm = a.ProgramTypes.EducationForms.FormDescription,
                         ApplicationStatus = a.ApplicationStatus.StatusDescription
                     })
@@ -80,6 +81,16 @@ namespace AdmissionDocsSystem.Views.Pages
             SignInWindow signInWindow = new SignInWindow();
             signInWindow.Show();
             CloseApplicantsMainWindow();
+        }
+
+        private void updateStatus_Click(object sender, RoutedEventArgs e)
+        {
+            LoadApplicantData();
+        }
+
+        private void UploadDocuments_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new SubmissionDocumentsPage());
         }
     }
 }
