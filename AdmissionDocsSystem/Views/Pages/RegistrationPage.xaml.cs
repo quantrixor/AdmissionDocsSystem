@@ -2,6 +2,7 @@
 using AdmissionDocsSystem.ViewModel;
 using AdmissionDocsSystem.Views.Windows;
 using System;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -41,12 +42,32 @@ namespace AdmissionDocsSystem.Views.Pages
         {
             try
             {
-                if(DataProcessingConsentCheckBox.IsChecked == false)
+                if (DataProcessingConsentCheckBox.IsChecked == false)
                 {
                     MessageBox.Show("Вам необходимо подтвердить своё согласие на обработку персональных данных.",
-                        "Внимание, системное уведомление!", MessageBoxButton.OK,MessageBoxImage.Warning);
+                        "Внимание, системное уведомление!", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+
+                if (!EmailValidator.IsValidEmail(EmailTextBox.Text))
+                {
+                    MessageBox.Show("Вы ввели недействительный электронный адрес. Пожалуйста, убедитесь в правильности введенных вами данных!",
+                        "Неккоретный адрес e-mail", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(EmailTextBox.Text) || string.IsNullOrEmpty(FirstNameTextBox.Text) ||
+                    string.IsNullOrEmpty(LastNameTextBox.Text) || string.IsNullOrEmpty(MiddleNameTextBox.Text) ||
+                    string.IsNullOrEmpty(PhoneNumberTextBox.Text) ||
+                    string.IsNullOrEmpty(RegistrationAddressTextBox.Text) || string.IsNullOrEmpty(ResidentialAddressTextBox.Text) ||
+                    string.IsNullOrEmpty(GenderComboBox.Text) || string.IsNullOrEmpty(EducationFormComboBox.Text) ||
+                    string.IsNullOrEmpty(FieldOfStudyComboBox.Text) || string.IsNullOrEmpty(EducationLevelComboBox.Text))
+                {
+                    MessageBox.Show("Заполните все поля! Пустые значения недопустимы.",
+                        "Некорректные данные", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 using (var db = new AdmissionDocsSystemEntities())
                 {
                     // Создание нового пользователя
@@ -83,8 +104,9 @@ namespace AdmissionDocsSystem.Views.Pages
                     db.Applicants.Add(applicant);
                     db.SaveChanges(); // Сохраняем абитуриента
 
-                    MessageBox.Show("Регистрация прошла успешно. Ваша заявка отправлена на проверку.", "Ваши данные отправлены.",
+                    MessageBox.Show("Регистрация прошла успешно. Ваша заявка отправлена на проверку. По окончанию проверки, вы получите письмо на указанную почту.", "Ваши данные отправлены.",
                         MessageBoxButton.OK, MessageBoxImage.Information);
+                    ClearForm();
                 }
             }
             catch (Exception ex)
@@ -92,6 +114,31 @@ namespace AdmissionDocsSystem.Views.Pages
                 MessageBox.Show($"Произошла ошибка: {ex.Message}");
             }
         }
+
+        private void ClearForm()
+        {
+            // Очищаем текстовые поля
+            FirstNameTextBox.Text = string.Empty;
+            LastNameTextBox.Text = string.Empty;
+            MiddleNameTextBox.Text = string.Empty;
+            EmailTextBox.Text = string.Empty;
+            PhoneNumberTextBox.Text = string.Empty;
+            RegistrationAddressTextBox.Text = string.Empty;
+            ResidentialAddressTextBox.Text = string.Empty;
+
+            // Сбрасываем DatePicker
+            BirthDatePicker.SelectedDate = null;
+
+            // Сброс состояния ComboBox-ов (предполагается, что они имеют пустой элемент для 'не выбрано')
+            GenderComboBox.SelectedItem = null;
+            EducationLevelComboBox.SelectedItem = null;
+            FieldOfStudyComboBox.SelectedItem = null;
+            EducationFormComboBox.SelectedItem = null;
+
+            // Сброс CheckBox
+            DataProcessingConsentCheckBox.IsChecked = false;
+        }
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

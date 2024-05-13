@@ -17,7 +17,7 @@
           <Key>
             <PropertyRef Name="ApplicantID" />
           </Key>
-          <Property Name="ApplicantID" Type="int" Nullable="false" />
+          <Property Name="ApplicantID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
           <Property Name="LastName" Type="nvarchar" MaxLength="100" />
@@ -37,7 +37,7 @@
           <Key>
             <PropertyRef Name="ApplicationID" />
           </Key>
-          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ApplicantID" Type="int" />
           <Property Name="ProgramTypeID" Type="int" />
           <Property Name="SubmissionDate" Type="date" />
@@ -47,14 +47,14 @@
           <Key>
             <PropertyRef Name="ApplicationStatusID" />
           </Key>
-          <Property Name="ApplicationStatusID" Type="int" Nullable="false" />
+          <Property Name="ApplicationStatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatusDescription" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Documents">
           <Key>
             <PropertyRef Name="DocumentID" />
           </Key>
-          <Property Name="DocumentID" Type="int" Nullable="false" />
+          <Property Name="DocumentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ApplicantID" Type="int" />
           <Property Name="DocumentType" Type="nvarchar" MaxLength="100" />
           <Property Name="DocumentContent" Type="varbinary(max)" />
@@ -64,21 +64,21 @@
           <Key>
             <PropertyRef Name="EducationalLevelID" />
           </Key>
-          <Property Name="EducationalLevelID" Type="int" Nullable="false" />
+          <Property Name="EducationalLevelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="EducationForms">
           <Key>
             <PropertyRef Name="EducationFormID" />
           </Key>
-          <Property Name="EducationFormID" Type="int" Nullable="false" />
+          <Property Name="EducationFormID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FormDescription" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ProgramTypes">
           <Key>
             <PropertyRef Name="ProgramTypeID" />
           </Key>
-          <Property Name="ProgramTypeID" Type="int" Nullable="false" />
+          <Property Name="ProgramTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SpecialtyID" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="EducationFormID" Type="int" />
@@ -103,7 +103,7 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="255" />
           <Property Name="Password" Type="nvarchar" MaxLength="255" />
           <Property Name="RoleID" Type="int" />
@@ -414,7 +414,7 @@
           <Key>
             <PropertyRef Name="ApplicantID" />
           </Key>
-          <Property Name="ApplicantID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -441,7 +441,7 @@
           <Key>
             <PropertyRef Name="ApplicationID" />
           </Key>
-          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ApplicantID" Type="Int32" />
           <Property Name="ProgramTypeID" Type="Int32" />
           <Property Name="SubmissionDate" Type="DateTime" Precision="0" />
@@ -454,7 +454,7 @@
           <Key>
             <PropertyRef Name="ApplicationStatusID" />
           </Key>
-          <Property Name="ApplicationStatusID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationStatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StatusDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK__Applicant__Appli__3F466844" FromRole="ApplicationStatus" ToRole="Applicants" />
           <NavigationProperty Name="Applications" Relationship="AdmissionDocsSystemModel.FK__Applicati__Statu__4F7CD00D" FromRole="ApplicationStatus" ToRole="Applications" />
@@ -463,7 +463,7 @@
           <Key>
             <PropertyRef Name="DocumentID" />
           </Key>
-          <Property Name="DocumentID" Type="Int32" Nullable="false" />
+          <Property Name="DocumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ApplicantID" Type="Int32" />
           <Property Name="DocumentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DocumentContent" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -474,7 +474,7 @@
           <Key>
             <PropertyRef Name="EducationalLevelID" />
           </Key>
-          <Property Name="EducationalLevelID" Type="Int32" Nullable="false" />
+          <Property Name="EducationalLevelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ApplicantEducation" Relationship="AdmissionDocsSystemModel.FK__Applicant__Educa__5FB337D6" FromRole="EducationalLevels" ToRole="ApplicantEducation" />
           <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK_Applicants_EducationalLevels" FromRole="EducationalLevels" ToRole="Applicants" />
@@ -483,7 +483,7 @@
           <Key>
             <PropertyRef Name="EducationFormID" />
           </Key>
-          <Property Name="EducationFormID" Type="Int32" Nullable="false" />
+          <Property Name="EducationFormID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FormDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProgramTypes" Relationship="AdmissionDocsSystemModel.FK__ProgramTy__Educa__6477ECF3" FromRole="EducationForms" ToRole="ProgramTypes" />
         </EntityType>
@@ -491,7 +491,7 @@
           <Key>
             <PropertyRef Name="ProgramTypeID" />
           </Key>
-          <Property Name="ProgramTypeID" Type="Int32" Nullable="false" />
+          <Property Name="ProgramTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyID" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="EducationFormID" Type="Int32" />
@@ -522,7 +522,7 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RoleID" Type="Int32" />
