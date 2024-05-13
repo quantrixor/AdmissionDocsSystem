@@ -20,7 +20,7 @@
             <TextBox Width="270" Height="30" VerticalContentAlignment="Center"/>
             <Label Content="Пароль:" Foreground="#009ee0"/>
             <PasswordBox Width="270" Height="30" VerticalContentAlignment="Center"/>
-            <Button Content="Войти" Height="30" Margin="0,10,0,5" Background="#009ee0" Foreground="White">
+            <Button Content="Войти" x:Name="SignInButton" Height="30" Margin="0,10,0,5" Background="#009ee0" Foreground="White" Click="SignInButton_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>

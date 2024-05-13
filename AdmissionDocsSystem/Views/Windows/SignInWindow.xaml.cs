@@ -30,5 +30,12 @@ namespace AdmissionDocsSystem.Views.Windows
             mainWindow.Show();
             this.Close();
         }
+
+        private void SignInButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdminMainWindow adminWindow = new AdminMainWindow();
+            adminWindow.Show();
+            this.Close();
+        }
     }
 }

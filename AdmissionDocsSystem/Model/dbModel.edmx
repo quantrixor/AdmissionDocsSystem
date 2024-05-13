@@ -1,0 +1,835 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище AdmissionDocsSystemModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApplicantEducation">
+          <Key>
+            <PropertyRef Name="ApplicantEducationID" />
+          </Key>
+          <Property Name="ApplicantEducationID" Type="int" Nullable="false" />
+          <Property Name="ApplicantID" Type="int" />
+          <Property Name="EducationalLevelID" Type="int" />
+        </EntityType>
+        <EntityType Name="Applicants">
+          <Key>
+            <PropertyRef Name="ApplicantID" />
+          </Key>
+          <Property Name="ApplicantID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ApplicationStatusID" Type="int" />
+          <Property Name="ConfirmedByAdmin" Type="bit" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegistrationAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="ResidentialAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="DataConsentGiven" Type="bit" />
+          <Property Name="EducationalLevelID" Type="int" />
+          <Property Name="ProgramTypeID" Type="int" />
+          <Property Name="IsConfirmed" Type="bit" />
+        </EntityType>
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="ApplicantID" Type="int" />
+          <Property Name="ProgramTypeID" Type="int" />
+          <Property Name="SubmissionDate" Type="date" />
+          <Property Name="StatusID" Type="int" />
+        </EntityType>
+        <EntityType Name="ApplicationStatus">
+          <Key>
+            <PropertyRef Name="ApplicationStatusID" />
+          </Key>
+          <Property Name="ApplicationStatusID" Type="int" Nullable="false" />
+          <Property Name="StatusDescription" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="DocumentID" />
+          </Key>
+          <Property Name="DocumentID" Type="int" Nullable="false" />
+          <Property Name="ApplicantID" Type="int" />
+          <Property Name="DocumentType" Type="nvarchar" MaxLength="100" />
+          <Property Name="DocumentContent" Type="varbinary(max)" />
+          <Property Name="IsVerified" Type="bit" />
+        </EntityType>
+        <EntityType Name="EducationalLevels">
+          <Key>
+            <PropertyRef Name="EducationalLevelID" />
+          </Key>
+          <Property Name="EducationalLevelID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="EducationForms">
+          <Key>
+            <PropertyRef Name="EducationFormID" />
+          </Key>
+          <Property Name="EducationFormID" Type="int" Nullable="false" />
+          <Property Name="FormDescription" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ProgramTypes">
+          <Key>
+            <PropertyRef Name="ProgramTypeID" />
+          </Key>
+          <Property Name="ProgramTypeID" Type="int" Nullable="false" />
+          <Property Name="SpecialtyID" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="EducationFormID" Type="int" />
+          <Property Name="Duration" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Specialties">
+          <Key>
+            <PropertyRef Name="SpecialtyID" />
+          </Key>
+          <Property Name="SpecialtyID" Type="int" Nullable="false" />
+          <Property Name="SpecialtyName" Type="nvarchar" MaxLength="255" />
+          <Property Name="SpecialtyCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="RegistrationDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Applicant__Appli__3F466844">
+          <End Role="ApplicationStatus" Type="Self.ApplicationStatus" Multiplicity="0..1" />
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationStatus">
+              <PropertyRef Name="ApplicationStatusID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="ApplicationStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicant__Appli__5EBF139D">
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="0..1" />
+          <End Role="ApplicantEducation" Type="Self.ApplicantEducation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicants">
+              <PropertyRef Name="ApplicantID" />
+            </Principal>
+            <Dependent Role="ApplicantEducation">
+              <PropertyRef Name="ApplicantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicant__Educa__5FB337D6">
+          <End Role="EducationalLevels" Type="Self.EducationalLevels" Multiplicity="0..1" />
+          <End Role="ApplicantEducation" Type="Self.ApplicantEducation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationalLevels">
+              <PropertyRef Name="EducationalLevelID" />
+            </Principal>
+            <Dependent Role="ApplicantEducation">
+              <PropertyRef Name="EducationalLevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicant__UserI__3E52440B">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__Appli__4D94879B">
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicants">
+              <PropertyRef Name="ApplicantID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="ApplicantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__Progr__4E88ABD4">
+          <End Role="ProgramTypes" Type="Self.ProgramTypes" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramTypes">
+              <PropertyRef Name="ProgramTypeID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="ProgramTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__Statu__4F7CD00D">
+          <End Role="ApplicationStatus" Type="Self.ApplicationStatus" Multiplicity="0..1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationStatus">
+              <PropertyRef Name="ApplicationStatusID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Documents__Appli__4222D4EF">
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="0..1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicants">
+              <PropertyRef Name="ApplicantID" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="ApplicantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramTy__Educa__6477ECF3">
+          <End Role="EducationForms" Type="Self.EducationForms" Multiplicity="0..1" />
+          <End Role="ProgramTypes" Type="Self.ProgramTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationForms">
+              <PropertyRef Name="EducationFormID" />
+            </Principal>
+            <Dependent Role="ProgramTypes">
+              <PropertyRef Name="EducationFormID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramTy__Speci__4AB81AF0">
+          <End Role="Specialties" Type="Self.Specialties" Multiplicity="0..1" />
+          <End Role="ProgramTypes" Type="Self.ProgramTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialties">
+              <PropertyRef Name="SpecialtyID" />
+            </Principal>
+            <Dependent Role="ProgramTypes">
+              <PropertyRef Name="SpecialtyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleID__398D8EEE">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_EducationalLevels">
+          <End Role="EducationalLevels" Type="Self.EducationalLevels" Multiplicity="0..1" />
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationalLevels">
+              <PropertyRef Name="EducationalLevelID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="EducationalLevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_ProgramTypes">
+          <End Role="ProgramTypes" Type="Self.ProgramTypes" Multiplicity="0..1" />
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramTypes">
+              <PropertyRef Name="ProgramTypeID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="ProgramTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище AdmissionDocsSystemModelContainer">
+          <EntitySet Name="ApplicantEducation" EntityType="Self.ApplicantEducation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Applicants" EntityType="Self.Applicants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationStatus" EntityType="Self.ApplicationStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Documents" EntityType="Self.Documents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EducationalLevels" EntityType="Self.EducationalLevels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EducationForms" EntityType="Self.EducationForms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramTypes" EntityType="Self.ProgramTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Specialties" EntityType="Self.Specialties" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Applicant__Appli__3F466844" Association="Self.FK__Applicant__Appli__3F466844">
+            <End Role="ApplicationStatus" EntitySet="ApplicationStatus" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicant__Appli__5EBF139D" Association="Self.FK__Applicant__Appli__5EBF139D">
+            <End Role="Applicants" EntitySet="Applicants" />
+            <End Role="ApplicantEducation" EntitySet="ApplicantEducation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicant__Educa__5FB337D6" Association="Self.FK__Applicant__Educa__5FB337D6">
+            <End Role="EducationalLevels" EntitySet="EducationalLevels" />
+            <End Role="ApplicantEducation" EntitySet="ApplicantEducation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicant__UserI__3E52440B" Association="Self.FK__Applicant__UserI__3E52440B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicati__Appli__4D94879B" Association="Self.FK__Applicati__Appli__4D94879B">
+            <End Role="Applicants" EntitySet="Applicants" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicati__Progr__4E88ABD4" Association="Self.FK__Applicati__Progr__4E88ABD4">
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicati__Statu__4F7CD00D" Association="Self.FK__Applicati__Statu__4F7CD00D">
+            <End Role="ApplicationStatus" EntitySet="ApplicationStatus" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Documents__Appli__4222D4EF" Association="Self.FK__Documents__Appli__4222D4EF">
+            <End Role="Applicants" EntitySet="Applicants" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramTy__Educa__6477ECF3" Association="Self.FK__ProgramTy__Educa__6477ECF3">
+            <End Role="EducationForms" EntitySet="EducationForms" />
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramTy__Speci__4AB81AF0" Association="Self.FK__ProgramTy__Speci__4AB81AF0">
+            <End Role="Specialties" EntitySet="Specialties" />
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleID__398D8EEE" Association="Self.FK__Users__RoleID__398D8EEE">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_EducationalLevels" Association="Self.FK_Applicants_EducationalLevels">
+            <End Role="EducationalLevels" EntitySet="EducationalLevels" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_ProgramTypes" Association="Self.FK_Applicants_ProgramTypes">
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdmissionDocsSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AdmissionDocsSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ApplicantEducation" EntityType="AdmissionDocsSystemModel.ApplicantEducation" />
+          <EntitySet Name="Applicants" EntityType="AdmissionDocsSystemModel.Applicants" />
+          <EntitySet Name="Applications" EntityType="AdmissionDocsSystemModel.Applications" />
+          <EntitySet Name="ApplicationStatus" EntityType="AdmissionDocsSystemModel.ApplicationStatus" />
+          <EntitySet Name="Documents" EntityType="AdmissionDocsSystemModel.Documents" />
+          <EntitySet Name="EducationalLevels" EntityType="AdmissionDocsSystemModel.EducationalLevels" />
+          <EntitySet Name="EducationForms" EntityType="AdmissionDocsSystemModel.EducationForms" />
+          <EntitySet Name="ProgramTypes" EntityType="AdmissionDocsSystemModel.ProgramTypes" />
+          <EntitySet Name="Roles" EntityType="AdmissionDocsSystemModel.Roles" />
+          <EntitySet Name="Specialties" EntityType="AdmissionDocsSystemModel.Specialties" />
+          <EntitySet Name="Users" EntityType="AdmissionDocsSystemModel.Users" />
+          <AssociationSet Name="FK__Applicant__Appli__5EBF139D" Association="AdmissionDocsSystemModel.FK__Applicant__Appli__5EBF139D">
+            <End Role="Applicants" EntitySet="Applicants" />
+            <End Role="ApplicantEducation" EntitySet="ApplicantEducation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicant__Educa__5FB337D6" Association="AdmissionDocsSystemModel.FK__Applicant__Educa__5FB337D6">
+            <End Role="EducationalLevels" EntitySet="EducationalLevels" />
+            <End Role="ApplicantEducation" EntitySet="ApplicantEducation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicant__Appli__3F466844" Association="AdmissionDocsSystemModel.FK__Applicant__Appli__3F466844">
+            <End Role="ApplicationStatus" EntitySet="ApplicationStatus" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicant__UserI__3E52440B" Association="AdmissionDocsSystemModel.FK__Applicant__UserI__3E52440B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicati__Appli__4D94879B" Association="AdmissionDocsSystemModel.FK__Applicati__Appli__4D94879B">
+            <End Role="Applicants" EntitySet="Applicants" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Documents__Appli__4222D4EF" Association="AdmissionDocsSystemModel.FK__Documents__Appli__4222D4EF">
+            <End Role="Applicants" EntitySet="Applicants" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_EducationalLevels" Association="AdmissionDocsSystemModel.FK_Applicants_EducationalLevels">
+            <End Role="EducationalLevels" EntitySet="EducationalLevels" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_ProgramTypes" Association="AdmissionDocsSystemModel.FK_Applicants_ProgramTypes">
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicati__Progr__4E88ABD4" Association="AdmissionDocsSystemModel.FK__Applicati__Progr__4E88ABD4">
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Applicati__Statu__4F7CD00D" Association="AdmissionDocsSystemModel.FK__Applicati__Statu__4F7CD00D">
+            <End Role="ApplicationStatus" EntitySet="ApplicationStatus" />
+            <End Role="Applications" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramTy__Educa__6477ECF3" Association="AdmissionDocsSystemModel.FK__ProgramTy__Educa__6477ECF3">
+            <End Role="EducationForms" EntitySet="EducationForms" />
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProgramTy__Speci__4AB81AF0" Association="AdmissionDocsSystemModel.FK__ProgramTy__Speci__4AB81AF0">
+            <End Role="Specialties" EntitySet="Specialties" />
+            <End Role="ProgramTypes" EntitySet="ProgramTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleID__398D8EEE" Association="AdmissionDocsSystemModel.FK__Users__RoleID__398D8EEE">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ApplicantEducation">
+          <Key>
+            <PropertyRef Name="ApplicantEducationID" />
+          </Key>
+          <Property Name="ApplicantEducationID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicantID" Type="Int32" />
+          <Property Name="EducationalLevelID" Type="Int32" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK__Applicant__Appli__5EBF139D" FromRole="ApplicantEducation" ToRole="Applicants" />
+          <NavigationProperty Name="EducationalLevels" Relationship="AdmissionDocsSystemModel.FK__Applicant__Educa__5FB337D6" FromRole="ApplicantEducation" ToRole="EducationalLevels" />
+        </EntityType>
+        <EntityType Name="Applicants">
+          <Key>
+            <PropertyRef Name="ApplicantID" />
+          </Key>
+          <Property Name="ApplicantID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationStatusID" Type="Int32" />
+          <Property Name="ConfirmedByAdmin" Type="Boolean" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ResidentialAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DataConsentGiven" Type="Boolean" />
+          <Property Name="EducationalLevelID" Type="Int32" />
+          <Property Name="ProgramTypeID" Type="Int32" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <NavigationProperty Name="ApplicantEducation" Relationship="AdmissionDocsSystemModel.FK__Applicant__Appli__5EBF139D" FromRole="Applicants" ToRole="ApplicantEducation" />
+          <NavigationProperty Name="ApplicationStatus" Relationship="AdmissionDocsSystemModel.FK__Applicant__Appli__3F466844" FromRole="Applicants" ToRole="ApplicationStatus" />
+          <NavigationProperty Name="Users" Relationship="AdmissionDocsSystemModel.FK__Applicant__UserI__3E52440B" FromRole="Applicants" ToRole="Users" />
+          <NavigationProperty Name="Applications" Relationship="AdmissionDocsSystemModel.FK__Applicati__Appli__4D94879B" FromRole="Applicants" ToRole="Applications" />
+          <NavigationProperty Name="Documents" Relationship="AdmissionDocsSystemModel.FK__Documents__Appli__4222D4EF" FromRole="Applicants" ToRole="Documents" />
+          <NavigationProperty Name="EducationalLevels" Relationship="AdmissionDocsSystemModel.FK_Applicants_EducationalLevels" FromRole="Applicants" ToRole="EducationalLevels" />
+          <NavigationProperty Name="ProgramTypes" Relationship="AdmissionDocsSystemModel.FK_Applicants_ProgramTypes" FromRole="Applicants" ToRole="ProgramTypes" />
+        </EntityType>
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicantID" Type="Int32" />
+          <Property Name="ProgramTypeID" Type="Int32" />
+          <Property Name="SubmissionDate" Type="DateTime" Precision="0" />
+          <Property Name="StatusID" Type="Int32" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK__Applicati__Appli__4D94879B" FromRole="Applications" ToRole="Applicants" />
+          <NavigationProperty Name="ProgramTypes" Relationship="AdmissionDocsSystemModel.FK__Applicati__Progr__4E88ABD4" FromRole="Applications" ToRole="ProgramTypes" />
+          <NavigationProperty Name="ApplicationStatus" Relationship="AdmissionDocsSystemModel.FK__Applicati__Statu__4F7CD00D" FromRole="Applications" ToRole="ApplicationStatus" />
+        </EntityType>
+        <EntityType Name="ApplicationStatus">
+          <Key>
+            <PropertyRef Name="ApplicationStatusID" />
+          </Key>
+          <Property Name="ApplicationStatusID" Type="Int32" Nullable="false" />
+          <Property Name="StatusDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK__Applicant__Appli__3F466844" FromRole="ApplicationStatus" ToRole="Applicants" />
+          <NavigationProperty Name="Applications" Relationship="AdmissionDocsSystemModel.FK__Applicati__Statu__4F7CD00D" FromRole="ApplicationStatus" ToRole="Applications" />
+        </EntityType>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="DocumentID" />
+          </Key>
+          <Property Name="DocumentID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicantID" Type="Int32" />
+          <Property Name="DocumentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK__Documents__Appli__4222D4EF" FromRole="Documents" ToRole="Applicants" />
+        </EntityType>
+        <EntityType Name="EducationalLevels">
+          <Key>
+            <PropertyRef Name="EducationalLevelID" />
+          </Key>
+          <Property Name="EducationalLevelID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApplicantEducation" Relationship="AdmissionDocsSystemModel.FK__Applicant__Educa__5FB337D6" FromRole="EducationalLevels" ToRole="ApplicantEducation" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK_Applicants_EducationalLevels" FromRole="EducationalLevels" ToRole="Applicants" />
+        </EntityType>
+        <EntityType Name="EducationForms">
+          <Key>
+            <PropertyRef Name="EducationFormID" />
+          </Key>
+          <Property Name="EducationFormID" Type="Int32" Nullable="false" />
+          <Property Name="FormDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProgramTypes" Relationship="AdmissionDocsSystemModel.FK__ProgramTy__Educa__6477ECF3" FromRole="EducationForms" ToRole="ProgramTypes" />
+        </EntityType>
+        <EntityType Name="ProgramTypes">
+          <Key>
+            <PropertyRef Name="ProgramTypeID" />
+          </Key>
+          <Property Name="ProgramTypeID" Type="Int32" Nullable="false" />
+          <Property Name="SpecialtyID" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EducationFormID" Type="Int32" />
+          <Property Name="Duration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK_Applicants_ProgramTypes" FromRole="ProgramTypes" ToRole="Applicants" />
+          <NavigationProperty Name="Applications" Relationship="AdmissionDocsSystemModel.FK__Applicati__Progr__4E88ABD4" FromRole="ProgramTypes" ToRole="Applications" />
+          <NavigationProperty Name="EducationForms" Relationship="AdmissionDocsSystemModel.FK__ProgramTy__Educa__6477ECF3" FromRole="ProgramTypes" ToRole="EducationForms" />
+          <NavigationProperty Name="Specialties" Relationship="AdmissionDocsSystemModel.FK__ProgramTy__Speci__4AB81AF0" FromRole="ProgramTypes" ToRole="Specialties" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="AdmissionDocsSystemModel.FK__Users__RoleID__398D8EEE" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Specialties">
+          <Key>
+            <PropertyRef Name="SpecialtyID" />
+          </Key>
+          <Property Name="SpecialtyID" Type="Int32" Nullable="false" />
+          <Property Name="SpecialtyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SpecialtyCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProgramTypes" Relationship="AdmissionDocsSystemModel.FK__ProgramTy__Speci__4AB81AF0" FromRole="Specialties" ToRole="ProgramTypes" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Applicants" Relationship="AdmissionDocsSystemModel.FK__Applicant__UserI__3E52440B" FromRole="Users" ToRole="Applicants" />
+          <NavigationProperty Name="Roles" Relationship="AdmissionDocsSystemModel.FK__Users__RoleID__398D8EEE" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK__Applicant__Appli__5EBF139D">
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.ApplicantEducation" Role="ApplicantEducation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicants">
+              <PropertyRef Name="ApplicantID" />
+            </Principal>
+            <Dependent Role="ApplicantEducation">
+              <PropertyRef Name="ApplicantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicant__Educa__5FB337D6">
+          <End Type="AdmissionDocsSystemModel.EducationalLevels" Role="EducationalLevels" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.ApplicantEducation" Role="ApplicantEducation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationalLevels">
+              <PropertyRef Name="EducationalLevelID" />
+            </Principal>
+            <Dependent Role="ApplicantEducation">
+              <PropertyRef Name="EducationalLevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicant__Appli__3F466844">
+          <End Type="AdmissionDocsSystemModel.ApplicationStatus" Role="ApplicationStatus" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationStatus">
+              <PropertyRef Name="ApplicationStatusID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="ApplicationStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicant__UserI__3E52440B">
+          <End Type="AdmissionDocsSystemModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__Appli__4D94879B">
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applications" Role="Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicants">
+              <PropertyRef Name="ApplicantID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="ApplicantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Documents__Appli__4222D4EF">
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Documents" Role="Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicants">
+              <PropertyRef Name="ApplicantID" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="ApplicantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_EducationalLevels">
+          <End Type="AdmissionDocsSystemModel.EducationalLevels" Role="EducationalLevels" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationalLevels">
+              <PropertyRef Name="EducationalLevelID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="EducationalLevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_ProgramTypes">
+          <End Type="AdmissionDocsSystemModel.ProgramTypes" Role="ProgramTypes" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applicants" Role="Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramTypes">
+              <PropertyRef Name="ProgramTypeID" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="ProgramTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__Progr__4E88ABD4">
+          <End Type="AdmissionDocsSystemModel.ProgramTypes" Role="ProgramTypes" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applications" Role="Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramTypes">
+              <PropertyRef Name="ProgramTypeID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="ProgramTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__Statu__4F7CD00D">
+          <End Type="AdmissionDocsSystemModel.ApplicationStatus" Role="ApplicationStatus" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Applications" Role="Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationStatus">
+              <PropertyRef Name="ApplicationStatusID" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramTy__Educa__6477ECF3">
+          <End Type="AdmissionDocsSystemModel.EducationForms" Role="EducationForms" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.ProgramTypes" Role="ProgramTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationForms">
+              <PropertyRef Name="EducationFormID" />
+            </Principal>
+            <Dependent Role="ProgramTypes">
+              <PropertyRef Name="EducationFormID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProgramTy__Speci__4AB81AF0">
+          <End Type="AdmissionDocsSystemModel.Specialties" Role="Specialties" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.ProgramTypes" Role="ProgramTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialties">
+              <PropertyRef Name="SpecialtyID" />
+            </Principal>
+            <Dependent Role="ProgramTypes">
+              <PropertyRef Name="SpecialtyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleID__398D8EEE">
+          <End Type="AdmissionDocsSystemModel.Roles" Role="Roles" Multiplicity="0..1" />
+          <End Type="AdmissionDocsSystemModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AdmissionDocsSystemModelContainer" CdmEntityContainer="AdmissionDocsSystemEntities">
+          <EntitySetMapping Name="ApplicantEducation">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.ApplicantEducation">
+              <MappingFragment StoreEntitySet="ApplicantEducation">
+                <ScalarProperty Name="EducationalLevelID" ColumnName="EducationalLevelID" />
+                <ScalarProperty Name="ApplicantID" ColumnName="ApplicantID" />
+                <ScalarProperty Name="ApplicantEducationID" ColumnName="ApplicantEducationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applicants">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Applicants">
+              <MappingFragment StoreEntitySet="Applicants">
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ProgramTypeID" ColumnName="ProgramTypeID" />
+                <ScalarProperty Name="EducationalLevelID" ColumnName="EducationalLevelID" />
+                <ScalarProperty Name="DataConsentGiven" ColumnName="DataConsentGiven" />
+                <ScalarProperty Name="ResidentialAddress" ColumnName="ResidentialAddress" />
+                <ScalarProperty Name="RegistrationAddress" ColumnName="RegistrationAddress" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="ConfirmedByAdmin" ColumnName="ConfirmedByAdmin" />
+                <ScalarProperty Name="ApplicationStatusID" ColumnName="ApplicationStatusID" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ApplicantID" ColumnName="ApplicantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Applications">
+              <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="SubmissionDate" ColumnName="SubmissionDate" />
+                <ScalarProperty Name="ProgramTypeID" ColumnName="ProgramTypeID" />
+                <ScalarProperty Name="ApplicantID" ColumnName="ApplicantID" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationStatus">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.ApplicationStatus">
+              <MappingFragment StoreEntitySet="ApplicationStatus">
+                <ScalarProperty Name="StatusDescription" ColumnName="StatusDescription" />
+                <ScalarProperty Name="ApplicationStatusID" ColumnName="ApplicationStatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Documents">
+              <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="DocumentContent" ColumnName="DocumentContent" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="ApplicantID" ColumnName="ApplicantID" />
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EducationalLevels">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.EducationalLevels">
+              <MappingFragment StoreEntitySet="EducationalLevels">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EducationalLevelID" ColumnName="EducationalLevelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EducationForms">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.EducationForms">
+              <MappingFragment StoreEntitySet="EducationForms">
+                <ScalarProperty Name="FormDescription" ColumnName="FormDescription" />
+                <ScalarProperty Name="EducationFormID" ColumnName="EducationFormID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgramTypes">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.ProgramTypes">
+              <MappingFragment StoreEntitySet="ProgramTypes">
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="EducationFormID" ColumnName="EducationFormID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SpecialtyID" ColumnName="SpecialtyID" />
+                <ScalarProperty Name="ProgramTypeID" ColumnName="ProgramTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Specialties">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Specialties">
+              <MappingFragment StoreEntitySet="Specialties">
+                <ScalarProperty Name="SpecialtyCode" ColumnName="SpecialtyCode" />
+                <ScalarProperty Name="SpecialtyName" ColumnName="SpecialtyName" />
+                <ScalarProperty Name="SpecialtyID" ColumnName="SpecialtyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="AdmissionDocsSystemModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

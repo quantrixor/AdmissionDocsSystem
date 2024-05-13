@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace AdmissionDocsSystem.ViewModel
 {
-    public class PasswordGenerator
+    public static class PasswordGenerator
     {
         private const string LowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
         private const string UpperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

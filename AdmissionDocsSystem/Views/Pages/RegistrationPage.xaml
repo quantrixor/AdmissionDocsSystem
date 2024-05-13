@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:AdmissionDocsSystem.Views.Pages"
       mc:Ignorable="d" 
       FontSize="14"
+      Loaded="Page_Loaded"
       d:DesignHeight="600" d:DesignWidth="1080"
       Title="Регистрация">
 
@@ -37,10 +38,14 @@
                 <ComboBoxItem>Мужской</ComboBoxItem>
                 <ComboBoxItem>Женский</ComboBoxItem>
             </ComboBox>
-            <Label Content="Образование:"/>
-            <ComboBox x:Name="EducationComboBox" Width="250"/>
-            <Label Content="Направление:"/>
-            <ComboBox x:Name="FieldOfStudyComboBox" Width="250"/>
+            <Label Content="Ваш текущий уровень образования:"/>
+            <ComboBox x:Name="EducationLevelComboBox" Width="250" SelectedValuePath="EducationalLevelID" DisplayMemberPath="Description"/>
+            
+            <Label Content="Выберите программу:"/>
+            <ComboBox x:Name="FieldOfStudyComboBox" Width="250" SelectedValuePath="ProgramTypeID" DisplayMemberPath="Description"/>
+            
+            <Label Content="Выберите форму обучения:"/>
+            <ComboBox x:Name="EducationFormComboBox" SelectedValuePath="EducationFormID" DisplayMemberPath="FormDescription"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
