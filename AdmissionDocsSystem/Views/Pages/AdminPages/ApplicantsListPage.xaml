@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Список абитуриентов" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
@@ -41,5 +42,13 @@
                 <DataGridTextColumn Header="Статус заявки" Binding="{Binding ApplicationStatus}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button x:Name="DeleteButton" Grid.Row="2" Content="Удалить" Click="DeleteButton_Click" Background="Red" Foreground="White" Height="35" FontWeight="Bold" Margin="10">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+        </Button>
     </Grid>
 </Page>

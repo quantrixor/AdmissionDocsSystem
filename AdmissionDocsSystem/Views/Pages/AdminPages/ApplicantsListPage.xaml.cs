@@ -86,6 +86,57 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
         {
             Page_Loaded(sender, e);
         }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicantsDataGrid.SelectedItem is ApplicantViewModel selectedApplicant)
+            {
+                var result = MessageBox.Show("Вы уверены, что хотите удалить этого абитуриента и все связанные данные?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using (var db = new AdmissionDocsSystemEntities())
+                        {
+                            // Find the applicant by ID
+                            var applicant = db.Applicants.Include("Users").Include("Documents").FirstOrDefault(a => a.ApplicantID == selectedApplicant.ApplicantID);
+
+                            if (applicant != null)
+                            {
+                                // Delete related documents
+                                db.Documents.RemoveRange(applicant.Documents);
+
+                                // Delete user
+                                db.Users.Remove(applicant.Users);
+
+                                // Delete applicant
+                                db.Applicants.Remove(applicant);
+
+                                db.SaveChanges();
+
+                                MessageBox.Show("Абитуриент и все связанные данные успешно удалены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                                // Refresh the data grid after deletion
+                                LoadApplicantData();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Абитуриент не найден в базе данных.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Произошла ошибка при удалении данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите абитуриента для удаления.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
     }
 }
 

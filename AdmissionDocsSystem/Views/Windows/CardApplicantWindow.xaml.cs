@@ -102,8 +102,8 @@ namespace AdmissionDocsSystem.Views.Windows
                             applicant.Users.Password = newPassword; // Change to hash the password
 
                             // Send email notification
-                            string subject = "Your Application is Approved";
-                            string body = $"Dear {applicant.FirstName},<br><br>Your application has been approved. You can now log in to the system using the following credentials:<br><br>Email: {applicant.Users.Email}<br>Password: {newPassword}<br><br>Please change your password after logging in.<br><br>Best regards,<br>Admission Team";
+                            string subject = "Ваша заявка одобрена";
+                            string body = $"Дорогой {applicant.FirstName},<br><br>Ваша заявка одобрена. Теперь вы можете войти в систему, используя следующие учетные данные.:<br><br>Email: {applicant.Users.Email}<br>Password: {newPassword}<br><br>Please change your password after logging in.<br><br>Best regards,<br>Admission Team";
                             await NotifyClass.SendEmailAsync(applicant.Users.Email, subject, body);
                         }
 
@@ -157,7 +157,7 @@ namespace AdmissionDocsSystem.Views.Windows
                     LastNameTextBox.Text = applicant.LastName;
                     MiddleNameTextBox.Text = applicant.MiddleName;
                     BirthDatePicker.SelectedDate = applicant.DateOfBirth;
-                    EmailTextBox.Text = applicant.Users.Email; // Предполагаем, что Email также нужно загрузить
+                    EmailTextBox.Text = applicant.Users.Email;
                     PhoneNumberTextBox.Text = applicant.PhoneNumber;
                     RegistrationAddressTextBox.Text = applicant.RegistrationAddress;
                     ResidentialAddressTextBox.Text = applicant.ResidentialAddress;
