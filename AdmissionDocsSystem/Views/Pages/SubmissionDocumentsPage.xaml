@@ -5,10 +5,54 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AdmissionDocsSystem.Views.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="850" d:DesignWidth="800"
       Title="Подача документов">
 
-    <Grid>
-        
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Загрузка документов" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
+            <StackPanel>
+                <!-- Инструкции для абитуриентов -->
+                <TextBlock Text="Перечень документов поступающего" FontSize="16" FontWeight="Bold" Margin="5"/>
+                <TextBlock Text="Граждане Российской Федерации:" FontSize="14" FontWeight="Bold" Margin="5"/>
+                <TextBlock Text="1. Оригинал или ксерокопию документов, удостоверяющих его личность, гражданство;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="2. Оригинал или ксерокопию документа об образовании и (или) документа об образовании и о квалификации;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="3. Медицинскую справку;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="4. 4 фотографии (размер 3х4)." TextWrapping="Wrap" Margin="5"/>
+
+                <TextBlock Text="Иностранные граждане, лица без гражданства, в том числе соотечественники, проживающие за рубежом:" FontSize="14" FontWeight="Bold" Margin="5"/>
+                <TextBlock Text="1. Копию документа, удостоверяющего личность поступающего, либо документ, удостоверяющий личность иностранного гражданина в Российской Федерации;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="2. Оригинал документа (документов) иностранного государства об образовании и (или) документа об образовании и о квалификации, если удостоверяемое указанным документом образование признается в Российской Федерации на уровне соответствующего образования;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="3. Заверенный в установленном порядке перевод на русский язык документа иностранного государства об образовании и приложения к нему;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="4. Копии документов или иных доказательств, подтверждающих принадлежность соотечественника, проживающего за рубежом;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="5. Медицинскую справку;" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Text="6. 4 фотографии (размер 3х4)." TextWrapping="Wrap" Margin="5"/>
+
+                <TextBlock Text="Фамилия, имя и отчество (последнее — при наличии) поступающего, указанные в переводах поданных документов, должны соответствовать фамилии, имени и отчеству (последнее — при наличии), указанным в документе, удостоверяющем личность иностранного гражданина в Российской Федерации." TextWrapping="Wrap" Margin="5"/>
+
+                <!-- Кнопки для загрузки документов -->
+                <Button Content="Выбрать файлы"  Click="SelectFilesButton_Click"  Width="200" Margin="5">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <ListBox x:Name="SelectedFilesListBox" Height="200" Margin="5"/>
+                <Button Content="Загрузить файлы" Click="UploadFilesButton_Click" Width="200" Margin="5">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

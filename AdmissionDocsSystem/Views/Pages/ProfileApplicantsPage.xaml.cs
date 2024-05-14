@@ -90,7 +90,7 @@ namespace AdmissionDocsSystem.Views.Pages
 
         private void UploadDocuments_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new SubmissionDocumentsPage());
+            NavigationService.Navigate(new SubmissionDocumentsPage(_currentUser));
         }
     }
 }
