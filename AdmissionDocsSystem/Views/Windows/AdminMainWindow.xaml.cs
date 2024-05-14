@@ -32,5 +32,12 @@ namespace AdmissionDocsSystem.Views.Windows
         {
             AdminFrame.Navigate(new ApplicantsListPage());
         }
+
+        private void SignOut_Click(object sender, RoutedEventArgs e)
+        {
+            SignInWindow signInWindow = new SignInWindow();
+            signInWindow.Show();
+            this.Close();
+        }
     }
 }

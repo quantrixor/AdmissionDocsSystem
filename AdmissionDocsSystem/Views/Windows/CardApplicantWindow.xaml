@@ -49,9 +49,9 @@
 
         <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label Content="Электронная почта:"/>
-            <TextBox x:Name="EmailTextBox" Width="250" IsReadOnly="True" PreviewTextInput="EmailTextBox_PreviewTextInput"/>
+            <TextBox x:Name="EmailTextBox" Width="250" IsReadOnly="True"/>
             <Label Content="Номер телефона:"/>
-            <TextBox x:Name="PhoneNumberTextBox" Width="250" IsReadOnly="True"/>
+            <TextBox x:Name="PhoneNumberTextBox" Width="250" IsReadOnly="True" PreviewTextInput="PhoneNumberTextBox_PreviewTextInput"/>
             <Label Content="Адрес регистрации:"/>
             <TextBox x:Name="RegistrationAddressTextBox" Width="250" Height="40" TextWrapping="Wrap" IsReadOnly="True"/>
             <Label Content="Адрес проживания:"/>

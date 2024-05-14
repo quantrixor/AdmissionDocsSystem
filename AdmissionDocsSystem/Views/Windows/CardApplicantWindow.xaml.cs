@@ -55,23 +55,6 @@ namespace AdmissionDocsSystem.Views.Windows
                 {
                     var applicantId = _applicant.ApplicantID; // Предполагаем, что ID текущего абитуриента уже загружен
                     var applicant = db.Applicants.Include("Users").FirstOrDefault(a => a.ApplicantID == applicantId);
-                    if (!EmailValidator.IsValidEmail(EmailTextBox.Text))
-                    {
-                        MessageBox.Show("Вы ввели недействительный электронный адрес. Пожалуйста, убедитесь в правильности введенных вами данных!",
-                            "Неккоретный адрес e-mail", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    if (string.IsNullOrEmpty(EmailTextBox.Text) || string.IsNullOrEmpty(FirstNameTextBox.Text) ||
-                        string.IsNullOrEmpty(LastNameTextBox.Text) || string.IsNullOrEmpty(MiddleNameTextBox.Text) ||
-                        string.IsNullOrEmpty(PhoneNumberTextBox.Text) ||
-                        string.IsNullOrEmpty(RegistrationAddressTextBox.Text) || string.IsNullOrEmpty(ResidentialAddressTextBox.Text) ||
-                        string.IsNullOrEmpty(GenderComboBox.Text) || string.IsNullOrEmpty(EducationFormComboBox.Text) ||
-                        string.IsNullOrEmpty(FieldOfStudyComboBox.Text) || string.IsNullOrEmpty(EducationLevelComboBox.Text))
-                    {
-                        MessageBox.Show("Заполните все поля! Пустые значения недопустимы.",
-                            "Некорректные данные", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
                     if (applicant != null)
                     {
                         applicant.FirstName = FirstNameTextBox.Text;
@@ -82,28 +65,45 @@ namespace AdmissionDocsSystem.Views.Windows
                         applicant.EducationalLevelID = (int?)EducationLevelComboBox.SelectedValue;
                         applicant.ProgramTypeID = (int?)FieldOfStudyComboBox.SelectedValue;
                         applicant.PhoneNumber = PhoneNumberTextBox.Text;
-                        applicant.Users.Email = EmailTextBox.Text;
+                        applicant.Users.Email = EmailTextBox.Text; // Предположим, что пользователь может менять email
                         applicant.RegistrationAddress = RegistrationAddressTextBox.Text;
                         applicant.ResidentialAddress = ResidentialAddressTextBox.Text;
 
                         int newStatusId = Convert.ToInt32(ApplicationStatusComboBox.SelectedValue);
 
-                        bool statusChangedToApproved = newStatusId != applicant.ApplicationStatusID && newStatusId == 2; // Assuming 2 is the ID for "Approved"
+                        bool statusChangedToApproved = newStatusId != applicant.ApplicationStatusID && newStatusId == 2;
+                        bool statusChangedToRejected = newStatusId != applicant.ApplicationStatusID && newStatusId == 3;
+                        bool statusChangedToDocumentsRequired = newStatusId != applicant.ApplicationStatusID && newStatusId == 4;
 
                         applicant.ApplicationStatusID = newStatusId;
+
                         if (statusChangedToApproved)
                         {
-                            // Update additional properties
+                            // Обновить дополнительные свойства
                             applicant.IsConfirmed = true;
                             applicant.Users.IsActive = true;
 
-                            // Generate new password
+                            // Создать новый пароль
                             string newPassword = PasswordGenerator.GeneratePassword();
-                            applicant.Users.Password = newPassword; // Change to hash the password
+                            applicant.Users.Password = newPassword; // Hash the password if needed
 
-                            // Send email notification
+                            // Отправить уведомление по электронной почте для одобрения
                             string subject = "Ваша заявка одобрена";
-                            string body = $"Дорогой {applicant.FirstName},<br><br>Ваша заявка одобрена. Теперь вы можете войти в систему, используя следующие учетные данные.:<br><br>Email: {applicant.Users.Email}<br>Password: {newPassword}<br><br>Please change your password after logging in.<br><br>Best regards,<br>Admission Team";
+                            string body = $"Дорогой {applicant.FirstName},<br><br>Ваша заявка одобрена. Теперь вы можете войти в систему, используя следующие учетные данные:<br><br>Email: {applicant.Users.Email}<br>Password: {newPassword}<br><br>Пожалуйста, смените пароль после входа.<br><br>С уважением,<br>Команда приема";
+                            await NotifyClass.SendEmailAsync(applicant.Users.Email, subject, body);
+                        }
+                        else if (statusChangedToRejected)
+                        {
+                            // Отправить уведомление по электронной почте об отказе
+                            string subject = "Ваша заявка отклонена";
+                            string body = $"Дорогой {applicant.FirstName},<br><br>К сожалению, Ваша заявка была отклонена. Пожалуйста, свяжитесь с нами для получения дополнительной информации.<br><br>С уважением,<br>Команда приема";
+                            await NotifyClass.SendEmailAsync(applicant.Users.Email, subject, body);
+                        }
+                        else if (statusChangedToDocumentsRequired)
+                        {
+                            // Отправьте уведомление по электронной почте о необходимости дополнительных документов
+                            string subject = "Требуются дополнительные документы";
+                            string body = $"Дорогой {applicant.FirstName},<br><br>Для продолжения обработки вашей заявки необходимы дополнительные документы. Пожалуйста, предоставьте необходимые документы как можно скорее.<br><br>С уважением,<br>Команда приема";
                             await NotifyClass.SendEmailAsync(applicant.Users.Email, subject, body);
                         }
 
@@ -186,7 +186,7 @@ namespace AdmissionDocsSystem.Views.Windows
             LoadApplicantData(_applicant.ApplicantID);
         }
 
-        private void EmailTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void PhoneNumberTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             if (!char.IsDigit(e.Text, e.Text.Length - 1))
             {

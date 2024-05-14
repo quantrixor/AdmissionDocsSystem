@@ -17,6 +17,7 @@
         <Grid Grid.Column="0" Background="WhiteSmoke">
             <StackPanel Margin="0,5,0,0">
                 <Button Content="Абитуриенты" x:Name="ApplicantsButton" Style="{StaticResource AdminFunctionalButton}"/>
+                <Button Content="Выйти" x:Name="SignOut" Style="{StaticResource AdminFunctionalButton}" Click="SignOut_Click"/>
             </StackPanel>
         </Grid>
 
