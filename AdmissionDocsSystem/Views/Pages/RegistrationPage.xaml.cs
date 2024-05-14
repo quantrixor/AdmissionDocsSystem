@@ -74,7 +74,7 @@ namespace AdmissionDocsSystem.Views.Pages
                     var user = new Users
                     {
                         Email = EmailTextBox.Text,
-                        Password = PasswordGenerator.GeneratePassword(),
+                        Password = null,
                         IsActive = false,
                         RoleID = 2, // По умолчанию это абитуриент
                         RegistrationDate = DateTime.Now

@@ -8,7 +8,31 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ApplicantsListPage">
 
-    <Grid>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Список абитуриентов" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
         
+        <DataGrid x:Name="ApplicantsDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" Margin="20" ColumnWidth="*" IsReadOnly="True" SelectionChanged="ApplicantsDataGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding ApplicantID}" Width="Auto"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" Width="*"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" Width="*"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding MiddleName}" Width="*"/>
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth, StringFormat=d}" Width="*"/>
+                <DataGridTextColumn Header="Электронная почта" Binding="{Binding Email}" Width="*"/>
+                <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}" Width="*"/>
+                <!--<DataGridTextColumn Header="Адрес регистрации" Binding="{Binding RegistrationAddress}" Width="*"/>
+                <DataGridTextColumn Header="Адрес проживания" Binding="{Binding ResidentialAddress}" Width="*"/>
+                <DataGridTextColumn Header="Уровень образования" Binding="{Binding EducationalLevel}" Width="*"/>
+                <DataGridTextColumn Header="Программа обучения" Binding="{Binding ProgramType}" Width="*"/>-->
+                <DataGridTextColumn Header="Код обучения" Binding="{Binding ProgramTypeCode}" Width="*"/>
+                <DataGridTextColumn Header="Форма обучения" Binding="{Binding EducationForm}" Width="*"/>
+                <DataGridTextColumn Header="Статус заявки" Binding="{Binding ApplicationStatus}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

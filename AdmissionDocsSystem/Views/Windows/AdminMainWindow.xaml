@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Режим администратора" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize" Loaded="Window_Loaded">
+        WindowState="Maximized" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>

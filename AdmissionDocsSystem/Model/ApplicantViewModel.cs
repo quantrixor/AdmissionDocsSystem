@@ -8,6 +8,7 @@ namespace AdmissionDocsSystem.Model
 {
     public class ApplicantViewModel
     {
+        public int ApplicantID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
@@ -21,6 +22,8 @@ namespace AdmissionDocsSystem.Model
         public string EducationForm { get; set; }
         public string ApplicationStatus { get; set; }
         public string ProgramTypeCode { get; set; }
+        public int ApplicationStatusID { get; set; }
+        public bool IsConfirmend { get; set; }
     }
 
 }
