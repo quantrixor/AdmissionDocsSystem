@@ -52,7 +52,7 @@
             <Label Content="Электронная почта:"/>
             <TextBox x:Name="EmailTextBox" Width="250"/>
             <Label Content="Номер телефона:"/>
-            <TextBox x:Name="PhoneNumberTextBox" Width="250"/>
+            <TextBox x:Name="PhoneNumberTextBox" PreviewTextInput="PhoneNumberTextBox_PreviewTextInput" Width="250"/>
             <Label Content="Адрес регистрации:"/>
             <TextBox x:Name="RegistrationAddressTextBox" Width="250" Height="40" TextWrapping="Wrap"/>
             <Label Content="Адрес проживания:"/>

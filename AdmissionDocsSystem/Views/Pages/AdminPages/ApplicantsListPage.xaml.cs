@@ -20,8 +20,7 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
         public ApplicantsListPage()
         {
             InitializeComponent();
-            LoadApplicantData();
-            LoadApplicationStatuses();
+           
         }
         private void LoadApplicationStatuses()
         {
@@ -75,6 +74,17 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                 var detailsWindow = new CardApplicantWindow(selectedApplicant);
                 detailsWindow.Show();
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadApplicantData();
+            LoadApplicationStatuses();
+        }
+
+        private void UpdateData_Click(object sender, RoutedEventArgs e)
+        {
+            Page_Loaded(sender, e);
         }
     }
 }

@@ -146,5 +146,38 @@ namespace AdmissionDocsSystem.Views.Pages
             LoadData.LoadProgramTypes(FieldOfStudyComboBox);
             LoadData.LoadEducationForm(EducationFormComboBox);
         }
+
+        private void PhoneNumberTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            TextBox textBox = sender as TextBox;
+            string text = textBox.Text + e.Text;
+
+            if (text.Length == 1)
+            {
+                textBox.Text = "+7 (";
+                textBox.SelectionStart = textBox.Text.Length;
+            }
+            else if (text.Length == 8)
+            {
+                textBox.Text += ") ";
+                textBox.SelectionStart = textBox.Text.Length;
+            }
+            else if (text.Length == 13 || text.Length == 16)
+            {
+                textBox.Text += "-";
+                textBox.SelectionStart = textBox.Text.Length;
+            }
+
+            if (textBox.Text.Length >= 18)
+            {
+                e.Handled = true;
+            }
+        }
     }
 }
