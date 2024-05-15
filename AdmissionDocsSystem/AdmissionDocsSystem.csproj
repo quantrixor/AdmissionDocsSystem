@@ -214,6 +214,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>dbModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Backup\AdmissionDocsSystem.bak" />
     <None Include="Model\dbModel.edmx.diagram">
       <DependentUpon>dbModel.edmx</DependentUpon>
     </None>
