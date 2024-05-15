@@ -38,6 +38,8 @@ namespace AdmissionDocsSystem.Views.Pages
 
         }
 
+        
+
         private void SubmitDataButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -53,6 +55,13 @@ namespace AdmissionDocsSystem.Views.Pages
                 {
                     MessageBox.Show("Вы ввели недействительный электронный адрес. Пожалуйста, убедитесь в правильности введенных вами данных!",
                         "Неккоретный адрес e-mail", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if(!EmailValidator.CheckUniqueEmail(EmailTextBox.Text))
+                {
+                    MessageBox.Show("Вы ввели существующий электронный адрес. Пожалуйста, убедитесь в правильности введенных вами данных!",
+                       "Неккоретный адрес e-mail", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 

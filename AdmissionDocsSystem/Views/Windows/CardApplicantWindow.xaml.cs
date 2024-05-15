@@ -54,6 +54,13 @@ namespace AdmissionDocsSystem.Views.Windows
 
             try
             {
+                if (!EmailValidator.CheckUniqueEmail(EmailTextBox.Text))
+                {
+                    MessageBox.Show("Вы ввели существующий электронный адрес. Пожалуйста, убедитесь в правильности введенных вами данных!",
+                       "Неккоретный адрес e-mail", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 using (var db = new AdmissionDocsSystemEntities())
                 {
                     var applicantId = _applicant.ApplicantID; // Предполагаем, что ID текущего абитуриента уже загружен

@@ -82,5 +82,10 @@ namespace AdmissionDocsSystem.Views.Pages
                 MessageBox.Show($"Произошла ошибка при загрузке файлов: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
+        }
     }
 }

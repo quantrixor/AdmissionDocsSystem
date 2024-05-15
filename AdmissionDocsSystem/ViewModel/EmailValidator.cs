@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AdmissionDocsSystem.Model;
+using System;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AdmissionDocsSystem.ViewModel
@@ -34,6 +36,18 @@ namespace AdmissionDocsSystem.ViewModel
             catch (ArgumentException)
             {
                 return false;
+            }
+        }
+
+        public static bool CheckUniqueEmail(string email)
+        {
+            using (var db = new AdmissionDocsSystemEntities())
+            {
+                var valiedEmail = db.Users.Count(u => u.Email == email);
+                if (valiedEmail > 0)
+                    return false;
+                else
+                    return true;
             }
         }
 
