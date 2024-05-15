@@ -67,6 +67,14 @@
                     </Style>
                 </Button.Resources>
             </Button>
+
+            <Button x:Name="DownloadDocumentsButton" Content="Скачать все документы" Margin="0,10,0,0" Width="250" Click="DownloadDocumentsButton_Click" HorizontalAlignment="Left" Background="#009ee0" Foreground="White" FontWeight="Bold">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </StackPanel>
 
     </Grid>

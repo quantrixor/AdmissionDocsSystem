@@ -1,6 +1,9 @@
 ﻿using AdmissionDocsSystem.Model;
 using AdmissionDocsSystem.ViewModel;
+using Microsoft.Win32;
 using System;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -216,6 +219,54 @@ namespace AdmissionDocsSystem.Views.Windows
             if (textBox.Text.Length >= 18)
             {
                 e.Handled = true;
+            }
+        }
+
+        private void DownloadDocumentsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var applicantId = _applicant.ApplicantID;
+            using (var db = new AdmissionDocsSystemEntities())
+            {
+                var documents = db.Documents.Where(d => d.ApplicantID == applicantId).ToList();
+                if (documents.Any())
+                {
+                    string tempFolderPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+                    Directory.CreateDirectory(tempFolderPath);
+
+                    string zipPath = Path.Combine(tempFolderPath, $"Applicant_{applicantId}_Documents.zip");
+
+                    using (var zipArchive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+                    {
+                        foreach (var doc in documents)
+                        {
+                            string entryName = $"{doc.DocumentType}.pdf";
+                            var zipEntry = zipArchive.CreateEntry(entryName);
+                            using (var entryStream = zipEntry.Open())
+                            {
+                                entryStream.Write(doc.DocumentContent, 0, doc.DocumentContent.Length);
+                            }
+                        }
+                    }
+
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        FileName = $"Applicant_{applicantId}_Documents.zip",
+                        Filter = "ZIP files (*.zip)|*.zip",
+                        Title = "Save Documents As"
+                    };
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        File.Copy(zipPath, saveFileDialog.FileName, true);
+                        MessageBox.Show("Документы успешно сохранены.");
+                    }
+
+                    Directory.Delete(tempFolderPath, true);
+                }
+                else
+                {
+                    MessageBox.Show("Нет документов для скачивания.");
+                }
             }
         }
     }
