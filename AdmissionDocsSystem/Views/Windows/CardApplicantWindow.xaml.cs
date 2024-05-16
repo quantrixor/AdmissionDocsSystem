@@ -63,6 +63,7 @@ namespace AdmissionDocsSystem.Views.Windows
                         applicant.FirstName = FirstNameTextBox.Text;
                         applicant.LastName = LastNameTextBox.Text;
                         applicant.MiddleName = MiddleNameTextBox.Text;
+                        applicant.PhoneNumber = PhoneNumberTextBox.Text;
                         applicant.DateOfBirth = BirthDatePicker.SelectedDate;
                         applicant.Gender = GenderComboBox.SelectedValue as string;
                         applicant.EducationalLevelID = (int?)EducationLevelComboBox.SelectedValue;

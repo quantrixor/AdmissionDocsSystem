@@ -5,26 +5,57 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AdmissionDocsSystem.Views.Pages.AdminPages"
       mc:Ignorable="d" 
-      Loaded="Page_Loaded"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1080"
       Title="ApplicantsListPage">
-
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Список абитуриентов" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
-        <Button HorizontalAlignment="Right" Width="150" Content="Обновить" x:Name="UpdateData" Click="UpdateData_Click" Margin="10">
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="Поиск:" FontSize="16" Foreground="DimGray" FontWeight="SemiBold"/>
+                <TextBox x:Name="SearchBox" Width="200" Margin="0,5,5,0" ToolTip="Введите текст для поиска" FontSize="16" TextChanged="SearchBox_TextChanged"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Выберите специальность:" FontSize="16" Foreground="DimGray" FontWeight="SemiBold"/>
+                <ComboBox x:Name="SpecialtyComboBox" Width="200" Margin="5" ToolTip="Выберите специальность" SelectionChanged="SpecialtyComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Все специальности" IsSelected="True"/>
+                    <!-- Данные будут загружены динамически -->
+                </ComboBox>
+
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal">
+            <Button HorizontalAlignment="Left" Width="150" Content="Экспорт Word" x:Name="ExportToWord" Click="ExportToWord_Click" Margin="5" Background="#009ee0" Foreground="White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button><Button HorizontalAlignment="Left" Width="150" Content="Экспорт Excel" x:Name="ExportToExel" Click="ExportToExel_Click" Margin="5" Background="#009ee0" Foreground="White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+        </StackPanel>
+        <Button Grid.Row="1"  HorizontalAlignment="Right" Width="150" Content="Обновить" x:Name="UpdateData" Click="UpdateData_Click" Margin="5" Background="#009ee0" Foreground="White">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"/>
                 </Style>
             </Button.Resources>
         </Button>
-        <DataGrid x:Name="ApplicantsDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" Margin="20" ColumnWidth="*" IsReadOnly="True" SelectionChanged="ApplicantsDataGrid_SelectionChanged">
+
+        <DataGrid x:Name="ApplicantsDataGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" Margin="20" ColumnWidth="*" IsReadOnly="True" SelectionChanged="ApplicantsDataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ApplicantID}" Width="Auto"/>
                 <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" Width="*"/>
@@ -33,17 +64,14 @@
                 <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth, StringFormat=d}" Width="*"/>
                 <DataGridTextColumn Header="Электронная почта" Binding="{Binding Email}" Width="*"/>
                 <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}" Width="*"/>
-                <!--<DataGridTextColumn Header="Адрес регистрации" Binding="{Binding RegistrationAddress}" Width="*"/>
-                <DataGridTextColumn Header="Адрес проживания" Binding="{Binding ResidentialAddress}" Width="*"/>
-                <DataGridTextColumn Header="Уровень образования" Binding="{Binding EducationalLevel}" Width="*"/>
-                <DataGridTextColumn Header="Программа обучения" Binding="{Binding ProgramType}" Width="*"/>-->
                 <DataGridTextColumn Header="Код обучения" Binding="{Binding ProgramTypeCode}" Width="*"/>
                 <DataGridTextColumn Header="Форма обучения" Binding="{Binding EducationForm}" Width="*"/>
                 <DataGridTextColumn Header="Статус заявки" Binding="{Binding ApplicationStatus}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button x:Name="DeleteButton" Grid.Row="2" Content="Удалить" Click="DeleteButton_Click" Background="Red" Foreground="White" Height="35" FontWeight="Bold" Margin="10">
+
+        <Button x:Name="DeleteButton" Grid.Row="3" Content="Удалить" Click="DeleteButton_Click" Background="Red" Foreground="White" Height="35" FontWeight="Bold" Margin="10">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"/>
@@ -51,4 +79,5 @@
             </Button.Resources>
         </Button>
     </Grid>
+
 </Page>

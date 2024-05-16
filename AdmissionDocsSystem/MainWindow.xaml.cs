@@ -9,7 +9,6 @@ namespace AdmissionDocsSystem
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Users _currentUser;
 
         public MainWindow()
         {
