@@ -15,6 +15,8 @@ using System.IO;
 using DocumentFormat.OpenXml.Spreadsheet;
 using ClosedXML.Excel;
 using System.Collections.Generic;
+using Word = DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Win32;
 
 namespace AdmissionDocsSystem.Views.Pages.AdminPages
 {
@@ -156,26 +158,6 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                 var detailsWindow = new CardApplicantWindow(selectedApplicant);
                 detailsWindow.Show();
             }
-
-
-            //if (ApplicantsDataGrid.SelectedItem is ApplicantViewModel selectedApplicant)
-            //{
-            //    var applicantName = $"{selectedApplicant.FirstName} {selectedApplicant.LastName} {selectedApplicant.MiddleName}";
-
-            //    // Проверяем, что список документов не null и инициализирован
-            //    var documents = selectedApplicant.Documents?.Select(d => new DocumentViewModel
-            //    {
-            //        DocumentID = d.DocumentID,
-            //        DocumentType = d.DocumentType,
-            //        IsVerified = d.IsVerified,
-            //        SelectedDocumentType = d.DocumentType // Заполняем начальным значением
-            //    }).ToList() ?? new List<DocumentViewModel>();
-
-            //    var documentsWindow = new DocumentVerificationWindow(selectedApplicant.ApplicantID, documents, applicantName);
-            //    documentsWindow.ShowDialog();
-            //    // Перезагрузка данных для обновления статуса документов
-            //    LoadApplicantData();
-            //}
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -265,89 +247,102 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
 
             LoadApplicantData(searchText, specialtyID);
         }
+
         private void ExportApplicantsToWord()
         {
-            string filePath = "ApplicantsList.docx";
-            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+            // Создание диалогового окна сохранения файла
+            var saveFileDialog = new SaveFileDialog
             {
-                MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
-                mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document();
-                DocumentFormat.OpenXml.Wordprocessing.Body body = new DocumentFormat.OpenXml.Wordprocessing.Body();
-                mainPart.Document.Append(body);
-
-                // Заголовок документа
-                DocumentFormat.OpenXml.Wordprocessing.Paragraph titleParagraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph(
-                    new DocumentFormat.OpenXml.Wordprocessing.Run(
-                        new DocumentFormat.OpenXml.Wordprocessing.Text("Список абитуриентов")));
-                titleParagraph.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties(
-                    new DocumentFormat.OpenXml.Wordprocessing.Justification() { Val = JustificationValues.Center });
-                titleParagraph.ParagraphProperties.SpacingBetweenLines = new DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines() { After = "200" };
-                body.Append(titleParagraph);
-
-                // Таблица данных абитуриентов
-                DocumentFormat.OpenXml.Wordprocessing.Table table = new DocumentFormat.OpenXml.Wordprocessing.Table();
-
-                // Определение границ таблицы
-                DocumentFormat.OpenXml.Wordprocessing.TableProperties tblProperties = new DocumentFormat.OpenXml.Wordprocessing.TableProperties(
-                    new DocumentFormat.OpenXml.Wordprocessing.TableBorders(
-                        new DocumentFormat.OpenXml.Wordprocessing.TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
-                        new DocumentFormat.OpenXml.Wordprocessing.BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
-                        new DocumentFormat.OpenXml.Wordprocessing.LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
-                        new DocumentFormat.OpenXml.Wordprocessing.RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
-                        new DocumentFormat.OpenXml.Wordprocessing.InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
-                        new DocumentFormat.OpenXml.Wordprocessing.InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 }
-                    )
-                );
-                table.AppendChild(tblProperties);
-
-                // Заголовок таблицы
-                DocumentFormat.OpenXml.Wordprocessing.TableRow headerRow = new DocumentFormat.OpenXml.Wordprocessing.TableRow();
-                string[] headers = { "ID", "Имя", "Фамилия", "Отчество", "Дата рождения", "Электронная почта", "Номер телефона", "Код обучения", "Форма обучения", "Статус заявки" };
-                foreach (var header in headers)
+                Filter = "Word files (*.docx)|*.docx|All files (*.*)|*.*",
+                FileName = "ApplicantsList.docx"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // Получение пути к файлу из диалогового окна
+                string filePath = saveFileDialog.FileName;
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
                 {
-                    DocumentFormat.OpenXml.Wordprocessing.TableCell cell = new DocumentFormat.OpenXml.Wordprocessing.TableCell(
-                        new DocumentFormat.OpenXml.Wordprocessing.Paragraph(
-                            new DocumentFormat.OpenXml.Wordprocessing.Run(
-                                new DocumentFormat.OpenXml.Wordprocessing.Text(header))));
-                    cell.TableCellProperties = new DocumentFormat.OpenXml.Wordprocessing.TableCellProperties(new DocumentFormat.OpenXml.Wordprocessing.TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" });
-                    headerRow.Append(cell);
-                }
-                table.Append(headerRow);
+                    MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                    mainPart.Document = new Word.Document();
+                    Word.Body body = mainPart.Document.AppendChild(new Word.Body());
 
-                // Данные абитуриентов
-                foreach (var applicant in Applicants)
-                {
-                    DocumentFormat.OpenXml.Wordprocessing.TableRow row = new DocumentFormat.OpenXml.Wordprocessing.TableRow();
-                    row.Append(
-                        CreateTableCell(applicant.ApplicantID.ToString()),
-                        CreateTableCell(applicant.FirstName),
-                        CreateTableCell(applicant.LastName),
-                        CreateTableCell(applicant.MiddleName),
-                        CreateTableCell(applicant.DateOfBirth.HasValue ? applicant.DateOfBirth.Value.ToShortDateString() : ""),
-                        CreateTableCell(applicant.Email),
-                        CreateTableCell(applicant.PhoneNumber),
-                        CreateTableCell(applicant.ProgramTypeCode),
-                        CreateTableCell(applicant.EducationForm),
-                        CreateTableCell(applicant.ApplicationStatus)
+                    // Заголовок документа
+                    Word.Paragraph titleParagraph = new Word.Paragraph(new Word.Run(new Word.Text("Список абитуриентов")));
+                    titleParagraph.ParagraphProperties = new Word.ParagraphProperties(new Word.Justification() { Val = Word.JustificationValues.Center });
+                    titleParagraph.ParagraphProperties.SpacingBetweenLines = new Word.SpacingBetweenLines() { After = "200" };
+                    body.Append(titleParagraph);
+
+                    // Создание таблицы
+                    Word.Table table = new Word.Table();
+
+                    // Определение границ таблицы
+                    Word.TableProperties tblProperties = new Word.TableProperties(
+                        new Word.TableBorders(
+                            new Word.TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
+                            new Word.BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
+                            new Word.LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
+                            new Word.RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
+                            new Word.InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 },
+                            new Word.InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 6 }
+                        )
                     );
-                    table.Append(row);
+                    table.AppendChild(tblProperties);
+
+                    // Заголовок таблицы
+                    Word.TableRow headerRow = new Word.TableRow();
+                    string[] headers = { "№ п/п", "номер заявления", "копия паспорта", "документ об образовании (аттестат, диплом, свидетельство об обучении, иной документ)", "фотографии (6 шт.)", "согласие на обработку персональных данных", "медицинская справка по форме 086/у", "копия медицинского полиса", "копия свидетельства (ИНН)", "копия СНИЛС", "приписной/военный билет", "заявление на проживание в общежитии (для иногородних)" };
+                    foreach (var header in headers)
+                    {
+                        Word.TableCell cell = new Word.TableCell(new Word.Paragraph(new Word.Run(new Word.Text(header))));
+                        cell.TableCellProperties = new Word.TableCellProperties(new Word.TableCellWidth() { Type = Word.TableWidthUnitValues.Dxa, Width = "2400" });
+                        headerRow.Append(cell);
+                    }
+                    table.Append(headerRow);
+
+                    // Данные абитуриентов
+                    int rowIndex = 1;
+                    foreach (var applicant in Applicants)
+                    {
+                        Word.TableRow row = new Word.TableRow();
+                        row.Append(
+                            CreateTableCell(rowIndex.ToString()), // № п/п
+                            CreateTableCell(applicant.ApplicantID.ToString()), // номер заявления
+                            CreateTableCell(GetDocumentStatus(applicant, "Копия паспорта")), // копия паспорта
+                            CreateTableCell(GetDocumentStatus(applicant, "Документ об образовании")), // документ об образовании
+                            CreateTableCell(GetDocumentStatus(applicant, "Фотография (6 шт.)")), // фотографии (6 шт.)
+                            CreateTableCell(GetDocumentStatus(applicant, "Согласие на обработку персональных данных")), // согласие на обработку персональных данных
+                            CreateTableCell(GetDocumentStatus(applicant, "Медицинская справка по форме 086/у")), // медицинская справка по форме 086/у
+                            CreateTableCell(GetDocumentStatus(applicant, "Копия медицинского полиса")), // копия медицинского полиса
+                            CreateTableCell(GetDocumentStatus(applicant, "Копия свидетельства (ИНН)")), // копия свидетельства (ИНН)
+                            CreateTableCell(GetDocumentStatus(applicant, "Копия СНИЛС")), // копия СНИЛС
+                            CreateTableCell(GetDocumentStatus(applicant, "Приписной/военный билет")), // приписной/военный билет
+                            CreateTableCell(GetDocumentStatus(applicant, "Заявление на проживание в общежитии (для иногородних)")) // заявление на проживание в общежитии (для иногородних)
+                        );
+                        table.Append(row);
+                        rowIndex++;
+                    }
+
+                    body.Append(table);
+                    mainPart.Document.Save();
                 }
 
-                body.Append(table);
-                mainPart.Document.Save();
+                MessageBox.Show($"Данные успешно выгружены в файл {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
-            MessageBox.Show($"Данные успешно выгружены в файл {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private DocumentFormat.OpenXml.Wordprocessing.TableCell CreateTableCell(string text)
+        private Word.TableCell CreateTableCell(string text)
         {
-            DocumentFormat.OpenXml.Wordprocessing.TableCell cell = new DocumentFormat.OpenXml.Wordprocessing.TableCell();
-            cell.Append(new DocumentFormat.OpenXml.Wordprocessing.Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Text(text))));
-            cell.TableCellProperties = new DocumentFormat.OpenXml.Wordprocessing.TableCellProperties(new DocumentFormat.OpenXml.Wordprocessing.TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" });
+            Word.TableCell cell = new Word.TableCell();
+            cell.Append(new Word.Paragraph(new Word.Run(new Word.Text(text))));
+            cell.TableCellProperties = new Word.TableCellProperties(new Word.TableCellWidth() { Type = Word.TableWidthUnitValues.Dxa, Width = "2400" });
             return cell;
         }
 
+        private string GetDocumentStatus(ApplicantViewModel applicant, string documentType)
+        {
+            var document = applicant.Documents.FirstOrDefault(d => d.DocumentType == documentType);
+            return document != null && document.IsVerified ? "+" : "";
+        }
 
         private void ExportToWord_Click(object sender, RoutedEventArgs e)
         {
@@ -355,41 +350,75 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
         }
         private void ExportApplicantsToExcel()
         {
-            string filePath = "ApplicantsList.xlsx";
-
-            using (var workbook = new XLWorkbook())
+            // Создание диалогового окна сохранения файла
+            var saveFileDialog = new SaveFileDialog
             {
-                var worksheet = workbook.Worksheets.Add("Applicants");
+                Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*",
+                FileName = "ApplicantsList.xlsx"
+            };
 
-                // Заголовки
-                string[] headers = { "ID", "Имя", "Фамилия", "Отчество", "Дата рождения", "Электронная почта", "Номер телефона", "Код обучения", "Форма обучения", "Статус заявки" };
-                for (int i = 0; i < headers.Length; i++)
+            // Если пользователь выбрал место сохранения и имя файла
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                using (var workbook = new XLWorkbook())
                 {
-                    worksheet.Cell(1, i + 1).Value = headers[i];
-                    worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+                    var worksheet = workbook.Worksheets.Add("Applicants");
+
+                    // Заголовки
+                    string[] headers = {
+                "№ п/п", "номер заявления", "Фамилия", "Имя", "Отчество", "Дата рождения",
+                "Электронная почта", "Номер телефона", "Код обучения", "Форма обучения", "Статус заявки",
+                "Копия паспорта", "Документ об образовании", "Фотография (6 шт.)",
+                "Согласие на обработку персональных данных", "Медицинская справка по форме 086/у",
+                "Копия медицинского полиса", "Копия свидетельства (ИНН)", "Копия СНИЛС",
+                "Приписной/военный билет", "Заявление на проживание в общежитии (для иногородних)"
+            };
+
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        worksheet.Cell(1, i + 1).Value = headers[i];
+                        worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+                    }
+
+                    // Данные абитуриентов
+                    for (int i = 0; i < Applicants.Count; i++)
+                    {
+                        var applicant = Applicants[i];
+                        int row = i + 2;
+
+                        worksheet.Cell(row, 1).Value = (i + 1); // № п/п
+                        worksheet.Cell(row, 2).Value = applicant.ApplicantID; // номер заявления
+                        worksheet.Cell(row, 3).Value = applicant.LastName;
+                        worksheet.Cell(row, 4).Value = applicant.FirstName;
+                        worksheet.Cell(row, 5).Value = applicant.MiddleName;
+                        worksheet.Cell(row, 6).Value = applicant.DateOfBirth.HasValue ? applicant.DateOfBirth.Value.ToShortDateString() : "";
+                        worksheet.Cell(row, 7).Value = applicant.Email;
+                        worksheet.Cell(row, 8).Value = applicant.PhoneNumber;
+                        worksheet.Cell(row, 9).Value = applicant.ProgramTypeCode;
+                        worksheet.Cell(row, 10).Value = applicant.EducationForm;
+                        worksheet.Cell(row, 11).Value = applicant.ApplicationStatus;
+
+                        worksheet.Cell(row, 12).Value = GetDocumentStatus(applicant, "Копия паспорта");
+                        worksheet.Cell(row, 13).Value = GetDocumentStatus(applicant, "Документ об образовании");
+                        worksheet.Cell(row, 14).Value = GetDocumentStatus(applicant, "Фотография (6 шт.)");
+                        worksheet.Cell(row, 15).Value = GetDocumentStatus(applicant, "Согласие на обработку персональных данных");
+                        worksheet.Cell(row, 16).Value = GetDocumentStatus(applicant, "Медицинская справка по форме 086/у");
+                        worksheet.Cell(row, 17).Value = GetDocumentStatus(applicant, "Копия медицинского полиса");
+                        worksheet.Cell(row, 18).Value = GetDocumentStatus(applicant, "Копия свидетельства (ИНН)");
+                        worksheet.Cell(row, 19).Value = GetDocumentStatus(applicant, "Копия СНИЛС");
+                        worksheet.Cell(row, 20).Value = GetDocumentStatus(applicant, "Приписной/военный билет");
+                        worksheet.Cell(row, 21).Value = GetDocumentStatus(applicant, "Заявление на проживание в общежитии (для иногородних)");
+                    }
+
+                    workbook.SaveAs(filePath);
                 }
 
-                // Данные абитуриентов
-                for (int i = 0; i < Applicants.Count; i++)
-                {
-                    var applicant = Applicants[i];
-                    worksheet.Cell(i + 2, 1).Value = applicant.ApplicantID;
-                    worksheet.Cell(i + 2, 2).Value = applicant.FirstName;
-                    worksheet.Cell(i + 2, 3).Value = applicant.LastName;
-                    worksheet.Cell(i + 2, 4).Value = applicant.MiddleName;
-                    worksheet.Cell(i + 2, 5).Value = applicant.DateOfBirth.HasValue ? applicant.DateOfBirth.Value.ToShortDateString() : "";
-                    worksheet.Cell(i + 2, 6).Value = applicant.Email;
-                    worksheet.Cell(i + 2, 7).Value = applicant.PhoneNumber;
-                    worksheet.Cell(i + 2, 8).Value = applicant.ProgramTypeCode;
-                    worksheet.Cell(i + 2, 9).Value = applicant.EducationForm;
-                    worksheet.Cell(i + 2, 10).Value = applicant.ApplicationStatus;
-                }
-
-                workbook.SaveAs(filePath);
+                MessageBox.Show($"Данные успешно выгружены в файл {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
-            MessageBox.Show($"Данные успешно выгружены в файл {filePath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
 
         private void ExportToExel_Click(object sender, RoutedEventArgs e)
         {
@@ -398,9 +427,20 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
 
         private void StatusDocuments_Click(object sender, RoutedEventArgs e)
         {
-            ApplicantsDataGrid.Visibility = Visibility.Collapsed;
-            DocumentsDataGrid.Visibility = Visibility.Visible;
-            DocumentsDataGrid.ItemsSource = Applicants;
+            if (ApplicantsDataGrid.Visibility == Visibility.Visible)
+            {
+                ApplicantsDataGrid.Visibility = Visibility.Collapsed;
+                DocumentsDataGrid.Visibility = Visibility.Visible;
+                StatusDocumentsButton.Content = "Показать абитуриентов";
+                DocumentsDataGrid.ItemsSource = Applicants;
+            }
+            else
+            {
+                ApplicantsDataGrid.Visibility = Visibility.Visible;
+                DocumentsDataGrid.Visibility = Visibility.Collapsed;
+                StatusDocumentsButton.Content = "Показать документы";
+            }
         }
+
     }
 }

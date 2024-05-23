@@ -56,7 +56,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Width="150" Content="Документы" x:Name="StatusDocuments" Click="StatusDocuments_Click" Margin="5" Background="#009ee0" Foreground="White">
+            <Button Width="150" Content="Показать документы" x:Name="StatusDocumentsButton" Click="StatusDocuments_Click" Margin="5" Background="#009ee0" Foreground="White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -84,9 +84,9 @@
         <DataGrid x:Name="DocumentsDataGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" Margin="20" ColumnWidth="*" Visibility="Collapsed" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ApplicantID}" Width="Auto"/>
-                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" Width="*"/>
-                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" Width="*"/>
-                <DataGridTextColumn Header="Отчество" Binding="{Binding MiddleName}" Width="*"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" Width="auto"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" Width="auto"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding MiddleName}" Width="auto"/>
                 <DataGridCheckBoxColumn Header="Копия паспорта" Binding="{Binding DocumentStatuses[0].IsUploaded}" Width="Auto"/>
                 <DataGridCheckBoxColumn Header="Документ об образовании" Binding="{Binding DocumentStatuses[1].IsUploaded}" Width="Auto"/>
                 <DataGridCheckBoxColumn Header="Фотография (6 шт.)" Binding="{Binding DocumentStatuses[2].IsUploaded}" Width="Auto"/>

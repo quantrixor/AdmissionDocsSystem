@@ -35,7 +35,10 @@ namespace AdmissionDocsSystem.Model
         public string DocumentType { get; set; }
         public bool IsVerified { get; set; }
         public string SelectedDocumentType { get; set; }
+        public byte[] DocumentContent { get; set; }
+        public string FilePath { get; set; }
     }
+
 
     public class DocumentStatusViewModel
     {

@@ -285,8 +285,9 @@ namespace AdmissionDocsSystem.Views.Windows
                 SelectedDocumentType = d.DocumentType // Заполняем начальным значением
             }).ToList() ?? new List<DocumentViewModel>();
 
-            var documentsWindow = new DocumentVerificationWindow(_applicant.ApplicantID, documents, applicantName);
-            documentsWindow.ShowDialog();
+            var documentsWindow = new DocumentVerificationWindow(_applicant.ApplicantID, applicantName);
+            documentsWindow.Show();
+            this.Close();
         }
     }
 }

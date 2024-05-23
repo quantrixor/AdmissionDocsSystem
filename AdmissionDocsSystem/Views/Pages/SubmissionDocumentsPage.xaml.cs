@@ -2,23 +2,54 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace AdmissionDocsSystem.Views.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для SubmissionDocumentsPage.xaml
-    /// </summary>
     public partial class SubmissionDocumentsPage : Page
     {
-        private List<string> selectedFiles;
+        private List<DocumentViewModel> selectedFiles;
         private Users _currentUser;
+        public List<string> DocumentTypes { get; } = new List<string>
+        {
+            "Копия паспорта",
+            "Документ об образовании",
+            "Фотография (6 шт.)",
+            "Согласие на обработку персональных данных",
+            "Медицинская справка по форме 086/у",
+            "Копия медицинского полиса",
+            "Копия свидетельства (ИНН)",
+            "Копия СНИЛС",
+            "Приписной/военный билет",
+            "Заявление на проживание в общежитии (для иногородних)"
+        };
+
         public SubmissionDocumentsPage(Users currentUser)
         {
             InitializeComponent();
-            selectedFiles = new List<string>();
+            selectedFiles = new List<DocumentViewModel>();
             _currentUser = currentUser;
+            DataContext = this; // Устанавливаем DataContext для привязки
+            LoadExistingDocuments();
+        }
+
+        private void LoadExistingDocuments()
+        {
+            using (var db = new AdmissionDocsSystemEntities())
+            {
+                var existingDocuments = db.Documents
+                    .Where(d => d.ApplicantID == _currentUser.UserID)
+                    .Select(d => new DocumentViewModel
+                    {
+                        DocumentID = d.DocumentID,
+                        DocumentType = d.DocumentType,
+                        IsVerified = (bool)d.IsVerified
+                    }).ToList();
+
+                DocumentsDataGrid.ItemsSource = existingDocuments;
+            }
         }
 
         private void SelectFilesButton_Click(object sender, RoutedEventArgs e)
@@ -33,9 +64,9 @@ namespace AdmissionDocsSystem.Views.Pages
             {
                 foreach (var fileName in openFileDialog.FileNames)
                 {
-                    if (!selectedFiles.Contains(fileName))
+                    if (!selectedFiles.Any(f => f.FilePath == fileName))
                     {
-                        selectedFiles.Add(fileName);
+                        selectedFiles.Add(new DocumentViewModel { FilePath = fileName, SelectedDocumentType = DocumentTypes.First() });
                     }
                 }
                 SelectedFilesListBox.ItemsSource = null;
@@ -55,15 +86,24 @@ namespace AdmissionDocsSystem.Views.Pages
             {
                 using (var db = new AdmissionDocsSystemEntities())
                 {
-                    foreach (var filePath in selectedFiles)
+                    bool hasDuplicate = false;
+
+                    foreach (var file in selectedFiles)
                     {
-                        byte[] fileData = File.ReadAllBytes(filePath);
-                        string fileName = System.IO.Path.GetFileName(filePath);
+                        byte[] fileData = File.ReadAllBytes(file.FilePath);
+
+                        // Проверка на дублирование типов документов
+                        if (db.Documents.Any(d => d.ApplicantID == _currentUser.UserID && d.DocumentType == file.SelectedDocumentType))
+                        {
+                            MessageBox.Show($"Документ с типом '{file.SelectedDocumentType}' уже существует для данного абитуриента.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            hasDuplicate = true;
+                            continue;
+                        }
 
                         var document = new Documents
                         {
                             ApplicantID = _currentUser.UserID,
-                            DocumentType = fileName,
+                            DocumentType = file.SelectedDocumentType,
                             DocumentContent = fileData,
                             IsVerified = false
                         };
@@ -71,10 +111,14 @@ namespace AdmissionDocsSystem.Views.Pages
                         db.Documents.Add(document);
                     }
 
-                    db.SaveChanges();
-                    MessageBox.Show("Файлы успешно загружены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    selectedFiles.Clear();
-                    SelectedFilesListBox.ItemsSource = null;
+                    if (!hasDuplicate)
+                    {
+                        db.SaveChanges();
+                        MessageBox.Show("Файлы успешно загружены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                        selectedFiles.Clear();
+                        SelectedFilesListBox.ItemsSource = null;
+                        LoadExistingDocuments(); // Обновить таблицу с загруженными документами
+                    }
                 }
             }
             catch (Exception ex)

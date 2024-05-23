@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Загрузка документов" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
-        <Button Content="Вернуться"  HorizontalAlignment="Left" Click="Back_Click"  Width="150" Margin="5">
+        <Button Content="Вернуться" HorizontalAlignment="Left" Click="Back_Click" Width="150" Margin="5">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"/>
@@ -42,15 +42,32 @@
 
                 <TextBlock Text="Фамилия, имя и отчество (последнее — при наличии) поступающего, указанные в переводах поданных документов, должны соответствовать фамилии, имени и отчеству (последнее — при наличии), указанным в документе, удостоверяющем личность иностранного гражданина в Российской Федерации." TextWrapping="Wrap" Margin="5"/>
 
+                <!-- Таблица для отображения загруженных документов -->
+                <DataGrid x:Name="DocumentsDataGrid" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True" CanUserAddRows="False" Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Тип документа" Binding="{Binding DocumentType}" Width="*" />
+                        <DataGridTextColumn Header="Статус" Binding="{Binding IsVerified}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
                 <!-- Кнопки для загрузки документов -->
-                <Button Content="Выбрать файлы"  Click="SelectFilesButton_Click"  Width="200" Margin="5">
+                <Button Content="Выбрать файлы" Click="SelectFilesButton_Click" Width="200" Margin="5">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="10"/>
                         </Style>
                     </Button.Resources>
                 </Button>
-                <ListBox x:Name="SelectedFilesListBox" Height="200" Margin="5"/>
+                <ListBox x:Name="SelectedFilesListBox" Height="200" Margin="5">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding FilePath}" Width="200"/>
+                                <ComboBox Width="200" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=DocumentTypes}" SelectedItem="{Binding SelectedDocumentType, Mode=TwoWay}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <Button Content="Загрузить файлы" Click="UploadFilesButton_Click" Width="200" Margin="5">
                     <Button.Resources>
                         <Style TargetType="Border">
