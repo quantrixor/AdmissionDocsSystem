@@ -2,6 +2,7 @@
 using AdmissionDocsSystem.ViewModel;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -269,6 +270,23 @@ namespace AdmissionDocsSystem.Views.Windows
                     MessageBox.Show("Нет документов для скачивания.");
                 }
             }
+        }
+
+        private void DocumentsVerification_Click(object sender, RoutedEventArgs e)
+        {
+            var applicantName = $"{_applicant.FirstName} {_applicant.LastName} {_applicant.MiddleName}";
+
+            // Проверяем, что список документов не null и инициализирован
+            var documents = _applicant.Documents?.Select(d => new DocumentViewModel
+            {
+                DocumentID = d.DocumentID,
+                DocumentType = d.DocumentType,
+                IsVerified = d.IsVerified,
+                SelectedDocumentType = d.DocumentType // Заполняем начальным значением
+            }).ToList() ?? new List<DocumentViewModel>();
+
+            var documentsWindow = new DocumentVerificationWindow(_applicant.ApplicantID, documents, applicantName);
+            documentsWindow.ShowDialog();
         }
     }
 }

@@ -24,6 +24,23 @@ namespace AdmissionDocsSystem.Model
         public string ProgramTypeCode { get; set; }
         public int ApplicationStatusID { get; set; }
         public bool IsConfirmend { get; set; }
+        public List<DocumentStatusViewModel> DocumentStatuses { get; set; }
+
+        public List<DocumentViewModel> Documents { get; set; }
+        public bool IsConfirmed { get; internal set; }
+    }
+    public class DocumentViewModel
+    {
+        public int DocumentID { get; set; }
+        public string DocumentType { get; set; }
+        public bool IsVerified { get; set; }
+        public string SelectedDocumentType { get; set; }
+    }
+
+    public class DocumentStatusViewModel
+    {
+        public string DocumentType { get; set; }
+        public bool IsUploaded { get; set; }
     }
 
 }

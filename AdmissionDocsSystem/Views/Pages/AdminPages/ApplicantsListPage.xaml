@@ -38,7 +38,8 @@
                         <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </Button.Resources>
-            </Button><Button HorizontalAlignment="Left" Width="150" Content="Экспорт Excel" x:Name="ExportToExel" Click="ExportToExel_Click" Margin="5" Background="#009ee0" Foreground="White">
+            </Button>
+            <Button HorizontalAlignment="Left" Width="150" Content="Экспорт Excel" x:Name="ExportToExel" Click="ExportToExel_Click" Margin="5" Background="#009ee0" Foreground="White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -47,14 +48,23 @@
             </Button>
 
         </StackPanel>
-        <Button Grid.Row="1"  HorizontalAlignment="Right" Width="150" Content="Обновить" x:Name="UpdateData" Click="UpdateData_Click" Margin="5" Background="#009ee0" Foreground="White">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </Button.Resources>
-        </Button>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" >
+            <Button Width="150" Content="Обновить" x:Name="UpdateData" Click="UpdateData_Click" Margin="5" Background="#009ee0" Foreground="White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Width="150" Content="Документы" x:Name="StatusDocuments" Click="StatusDocuments_Click" Margin="5" Background="#009ee0" Foreground="White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
 
+        </StackPanel>
         <DataGrid x:Name="ApplicantsDataGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" Margin="20" ColumnWidth="*" IsReadOnly="True" SelectionChanged="ApplicantsDataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ApplicantID}" Width="Auto"/>
@@ -70,7 +80,25 @@
             </DataGrid.Columns>
         </DataGrid>
 
-
+ <!-- DataGrid для списка документов -->
+        <DataGrid x:Name="DocumentsDataGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" Margin="20" ColumnWidth="*" Visibility="Collapsed" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding ApplicantID}" Width="Auto"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" Width="*"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" Width="*"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding MiddleName}" Width="*"/>
+                <DataGridCheckBoxColumn Header="Копия паспорта" Binding="{Binding DocumentStatuses[0].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Документ об образовании" Binding="{Binding DocumentStatuses[1].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Фотография (6 шт.)" Binding="{Binding DocumentStatuses[2].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Согласие на обработку персональных данных" Binding="{Binding DocumentStatuses[3].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Медицинская справка по форме 086/у" Binding="{Binding DocumentStatuses[4].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Копия медицинского полиса" Binding="{Binding DocumentStatuses[5].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Копия свидетельства (ИНН)" Binding="{Binding DocumentStatuses[6].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Копия СНИЛС" Binding="{Binding DocumentStatuses[7].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Приписной/военный билет" Binding="{Binding DocumentStatuses[8].IsUploaded}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Заявление на проживание в общежитии (для иногородних)" Binding="{Binding DocumentStatuses[9].IsUploaded}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button x:Name="DeleteButton" Grid.Row="3" Content="Удалить" Click="DeleteButton_Click" Background="Red" Foreground="White" Height="35" FontWeight="Bold" Margin="10">
             <Button.Resources>
                 <Style TargetType="Border">

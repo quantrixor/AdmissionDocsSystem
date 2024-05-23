@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using System.IO;
 using DocumentFormat.OpenXml.Spreadsheet;
 using ClosedXML.Excel;
+using System.Collections.Generic;
 
 namespace AdmissionDocsSystem.Views.Pages.AdminPages
 {
@@ -52,6 +53,7 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                     .Include("ProgramTypes.Specialties")
                     .Include("ProgramTypes.EducationForms")
                     .Include("ApplicationStatus")
+                    .Include("Documents")
                     .Where(a => a.Users.Roles.RoleName == "Applicant");
 
                 if (!string.IsNullOrEmpty(searchText))
@@ -68,7 +70,21 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                     query = query.Where(a => a.ProgramTypes.Specialties.SpecialtyID == specialtyID);
                 }
 
-                var applicants = query.Select(a => new ApplicantViewModel
+                var documentTypes = new List<string>
+        {
+            "Копия паспорта",
+            "Документ об образовании",
+            "Фотография (6 шт.)",
+            "Согласие на обработку персональных данных",
+            "Медицинская справка по форме 086/у",
+            "Копия медицинского полиса",
+            "Копия свидетельства (ИНН)",
+            "Копия СНИЛС",
+            "Приписной/военный билет",
+            "Заявление на проживание в общежитии (для иногородних)"
+        };
+
+                var applicants = query.ToList().Select(a => new ApplicantViewModel
                 {
                     ApplicantID = a.ApplicantID,
                     FirstName = a.FirstName,
@@ -77,15 +93,23 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                     DateOfBirth = a.DateOfBirth,
                     Email = a.Users.Email,
                     PhoneNumber = a.PhoneNumber,
-                    RegistrationAddress = a.RegistrationAddress,
-                    ResidentialAddress = a.ResidentialAddress,
-                    EducationalLevel = a.EducationalLevels.Description,
-                    ProgramType = a.ProgramTypes.Description,
                     ProgramTypeCode = a.ProgramTypes.Specialties.SpecialtyCode,
                     EducationForm = a.ProgramTypes.EducationForms.FormDescription,
                     ApplicationStatus = a.ApplicationStatus.StatusDescription,
                     ApplicationStatusID = a.ApplicationStatus.ApplicationStatusID,
-                    IsConfirmend = a.IsConfirmed ?? false // Проверяем на null
+                    IsConfirmed = a.IsConfirmed ?? false,
+                    Documents = a.Documents.Select(d => new DocumentViewModel
+                    {
+                        DocumentID = d.DocumentID,
+                        DocumentType = d.DocumentType,
+                        IsVerified = d.IsVerified ?? false,
+                        SelectedDocumentType = d.DocumentType
+                    }).ToList(),
+                    DocumentStatuses = documentTypes.Select(dt => new DocumentStatusViewModel
+                    {
+                        DocumentType = dt,
+                        IsUploaded = a.Documents.Any(d => d.DocumentType == dt && d.IsVerified.GetValueOrDefault())
+                    }).ToList()
                 }).ToList();
 
                 if (Applicants == null)
@@ -103,7 +127,6 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                 {
                     ApplicantsDataGrid.ItemsSource = Applicants;
                 }
-
             }
         }
 
@@ -133,6 +156,26 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
                 var detailsWindow = new CardApplicantWindow(selectedApplicant);
                 detailsWindow.Show();
             }
+
+
+            //if (ApplicantsDataGrid.SelectedItem is ApplicantViewModel selectedApplicant)
+            //{
+            //    var applicantName = $"{selectedApplicant.FirstName} {selectedApplicant.LastName} {selectedApplicant.MiddleName}";
+
+            //    // Проверяем, что список документов не null и инициализирован
+            //    var documents = selectedApplicant.Documents?.Select(d => new DocumentViewModel
+            //    {
+            //        DocumentID = d.DocumentID,
+            //        DocumentType = d.DocumentType,
+            //        IsVerified = d.IsVerified,
+            //        SelectedDocumentType = d.DocumentType // Заполняем начальным значением
+            //    }).ToList() ?? new List<DocumentViewModel>();
+
+            //    var documentsWindow = new DocumentVerificationWindow(selectedApplicant.ApplicantID, documents, applicantName);
+            //    documentsWindow.ShowDialog();
+            //    // Перезагрузка данных для обновления статуса документов
+            //    LoadApplicantData();
+            //}
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -351,6 +394,13 @@ namespace AdmissionDocsSystem.Views.Pages.AdminPages
         private void ExportToExel_Click(object sender, RoutedEventArgs e)
         {
             ExportApplicantsToExcel();
+        }
+
+        private void StatusDocuments_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicantsDataGrid.Visibility = Visibility.Collapsed;
+            DocumentsDataGrid.Visibility = Visibility.Visible;
+            DocumentsDataGrid.ItemsSource = Applicants;
         }
     }
 }

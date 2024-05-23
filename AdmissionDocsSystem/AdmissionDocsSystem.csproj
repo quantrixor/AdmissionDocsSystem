@@ -223,6 +223,9 @@
     <Compile Include="Views\Windows\CardApplicantWindow.xaml.cs">
       <DependentUpon>CardApplicantWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Windows\DocumentVerificationWindow.xaml.cs">
+      <DependentUpon>DocumentVerificationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\SignInWindow.xaml.cs">
       <DependentUpon>SignInWindow.xaml</DependentUpon>
     </Compile>
@@ -263,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Windows\CardApplicantWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\DocumentVerificationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
